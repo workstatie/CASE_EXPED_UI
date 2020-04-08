@@ -1,0 +1,41 @@
+<h4>Validate Request</h4>
+
+<div [formGroup]="validationForm">
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Sender</mat-label>
+            <input matInput formControlName="sender" [(ngModel)]="mail.emailFrom">
+
+        </mat-form-field>
+
+        <mat-form-field fxFlex appearance="fill">
+            <mat-label>Mail Body</mat-label>
+            <textarea matInput  rows="5" formControlName="body" [(ngModel)]="mail.body"></textarea>
+        </mat-form-field>
+    </div>
+
+
+    <h4>Extracted Data</h4>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Location From</mat-label>
+            <input matInput value="Bucharest">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Location to</mat-label>
+            <input matInput value="Paris">
+        </mat-form-field>
+    </div>
+</div>
+<div fxLayout="row"  fxLayoutGap="20px">
+<section class="example-section">
+    <mat-checkbox class="example-margin" [(ngModel)]="checkSafeFleet">SafeFleet</mat-checkbox>
+    <mat-checkbox class="example-margin" [(ngModel)]="checkBursaTransport">Bursa Transport</mat-checkbox>
+</section>
+<button mat-raised-button color="primary">Get Offers</button>
+ 
+
+</div>

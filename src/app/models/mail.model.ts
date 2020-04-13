@@ -4,6 +4,7 @@ export class MailModel {
     subject: string;
     body: string;
     emailFrom: string;
+    
   
 
     constructor(

@@ -20,10 +20,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-
-import { UiPathRobot } from '@uipath/robot';
+import {MatBadgeModule} from '@angular/material/badge';
 import { ValidateDataComponent } from './components/dashboard/validate-data/validate-data.component';
-
+import { GetTicketsService } from './services/getTickets.service';
+import { MyTicketsComponent } from './components/dashboard/my-tickets/my-tickets.component';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +34,7 @@ import { ValidateDataComponent } from './components/dashboard/validate-data/vali
     SlackInitComponent,
     SkypeInitComponent,
     ValidateDataComponent,
+    MyTicketsComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,8 +51,12 @@ import { ValidateDataComponent } from './components/dashboard/validate-data/vali
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
+    MatBadgeModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    GetTicketsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

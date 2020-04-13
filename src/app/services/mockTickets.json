@@ -1,0 +1,29 @@
+[{
+    "_id": "001",
+    "status": "In Progress",
+    "assignedToID":"999",
+    "data":{
+        "origin":"Email",
+        "addressFrom":"str. Unirii",
+        "addressTo":"Johann Strasse",
+        "citryFrom":"Bucharest",
+        "citryTo":"Berlin",
+        "postcodeFrom":"060321",
+        "postcodeTo":"090990"      
+    }
+},
+{
+    "_id": "002",
+    "status": "In Progress",
+    "assignedToID":"999",
+    "data":{
+        "origin":"Email",
+        "addressFrom":"str. Bastiliei",
+        "addressTo":"Rue Belle",
+        "citryFrom":"Bucharest",
+        "citryTo":"Paris",
+        "postcodeFrom":"032321",
+        "postcodeTo":"232323"      
+    }
+}
+]

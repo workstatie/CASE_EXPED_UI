@@ -1,33 +1,40 @@
 <mat-toolbar color="primary">
 
-  <span>TransportHub</span>
+  <span>Transport Hub</span>
   <span class="spacer"></span>
-  <mat-icon class="icon" aria-hidden="false" aria-label="Example delete icon">notifications</mat-icon>
+  <mat-icon matBadge="15" matBadgeColor="warn">notifications</mat-icon>
   <mat-icon class="icon" aria-hidden="false" aria-label="My profile">account_circle </mat-icon>
 
 </mat-toolbar>
 
-<div  fxLayout="row"  fxLayoutGap="10px" fxLayoutGap.xs="0" style="margin:20px;;">
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutGap.xs="0" style="margin:20px;;">
   <div fxLayout="column" fxFlex="20%" fxLayoutAlign="start stretch" fxLayoutGap="30px">
-    <div>
+    <!-- <div>
       <mat-card>
         <outlook-init (onMailPicked)="validateMail($event)"></outlook-init>
       </mat-card>
-    </div>
-
+    </div> -->
     <div>
       <mat-card>
-        <skype-init></skype-init>
+        <my-tickets></my-tickets>
       </mat-card>
     </div>
+    <div>
+
+    </div>
   </div>
+
+
   <div fxLayout="column" fxFlex="80%">
     <mat-card>
-       <h2>Test Dashboard</h2>
-        <div >
-          <validate-data  *ngIf="validateData"  [mail]='selectedMail'></validate-data>
-        </div>
+      <h2>Test Dashboard</h2>
+      <div>
+        <validate-data *ngIf="validateData" [mail]='selectedMail'></validate-data>
+      </div>
 
     </mat-card>
+
   </div>
+
+
 </div>

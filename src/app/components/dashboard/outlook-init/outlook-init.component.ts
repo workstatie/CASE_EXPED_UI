@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UiPathRobot } from '@uipath/robot';
-import { Job } from '@uipath/robot/dist/models';
+
 import { MailModel } from 'src/app/models/mail.model';
 import { Router } from '@angular/router';
 import { ExtractedDataModel } from 'src/app/models/extractedData.model';

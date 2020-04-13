@@ -1,18 +1,34 @@
 
 export class ExtractedDataModel {
 
-    locationFrom: string;
-    locationTo: string;
+    origin:string;
+    addressFrom: string;
+    adressTo: string;
+    cityFrom: string;
+    cityTo: string;
+    postcodeFrom: string;
+    postcodeTo: string;
+    
     
   
 
     constructor(
-        locationFrom: string,
-        locationTo: string
+        origin: string,
+        addressFrom: string,
+        adressTo: string,
+        cityFrom: string,
+        cityTo: string,
+        postcodeFrom: string,
+        postcodeTo: string,
         
     ) {
-        this.locationFrom = locationFrom;
-        this.locationTo = locationTo;
+        this.origin = origin;
+        this.addressFrom = addressFrom;
+        this.adressTo = adressTo;
+        this.cityFrom = cityFrom;
+        this.cityTo = cityTo;
+        this.postcodeFrom = postcodeFrom;
+        this.postcodeTo = postcodeTo;
      
     }     
 }

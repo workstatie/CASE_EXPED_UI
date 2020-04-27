@@ -1,2 +1,29 @@
-<h4>My Tickets</h4>
+<div>
+    <span class="title">My Tickets</span>
+    
+    <button style="margin-left:20px;" mat-mini-fab color="primary" (click)="newRequestClicked()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
 
+<mat-spinner [diameter]="40" *ngIf="showSpinner"></mat-spinner>
+<div style="margin-top: 20px;">
+
+    <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="ID">
+
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let ticket"> <a (click)=ticketClicked(ticket)>{{ticket.id}} </a></td>
+        </ng-container>
+        <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let ticket"> {{statusValues[ticket.request_status_type_id].name}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [hidePageSize]="true" [pageSizeOptions]="[3,5]"></mat-paginator>
+
+
+</div>

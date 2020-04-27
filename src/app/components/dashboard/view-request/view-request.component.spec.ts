@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OutlookInitComponent } from './outlook-init.component';
+import { ViewRequestComponent } from './view-request.component';
 
-describe('OutlookInitComponent', () => {
-  let component: OutlookInitComponent;
-  let fixture: ComponentFixture<OutlookInitComponent>;
+describe('ViewRequestComponent', () => {
+  let component: ViewRequestComponent;
+  let fixture: ComponentFixture<ViewRequestComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutlookInitComponent ]
+      declarations: [ ViewRequestComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OutlookInitComponent);
+    fixture = TestBed.createComponent(ViewRequestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

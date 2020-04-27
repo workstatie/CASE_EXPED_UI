@@ -1,0 +1,16 @@
+table {
+    width: 100%;
+  }
+
+  th.mat-sort-header-sorted {
+    color: black;
+  }
+
+  .title{
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .fill-space {
+    flex: 1 1 auto;
+  }

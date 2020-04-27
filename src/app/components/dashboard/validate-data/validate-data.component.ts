@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MailModel } from 'src/app/models/mail.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { RequestsModel } from 'src/app/models/requests.model';
 
 @Component({
   selector: 'validate-data',
@@ -9,13 +9,15 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class ValidateDataComponent implements OnInit {
 
-  @Input() mail;
+  @Input() ticket:RequestsModel;
+
   constructor() { }
   validationForm: FormGroup;
   checkSafeFleet: Boolean= true;
   checkBursaTransport: Boolean= true;
 
   ngOnInit(){
+    console.log(this.ticket)
     this.validationForm = new FormGroup({
       body: new FormControl(null, Validators.required),
       subject: new FormControl(null, Validators.required),

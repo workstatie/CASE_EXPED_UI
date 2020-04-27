@@ -6,8 +6,8 @@
         "origin":"Email",
         "addressFrom":"str. Unirii",
         "addressTo":"Johann Strasse",
-        "citryFrom":"Bucharest",
-        "citryTo":"Berlin",
+        "cityFrom":"Bucharest",
+        "cityTo":"Berlin",
         "postcodeFrom":"060321",
         "postcodeTo":"090990"      
     }
@@ -20,8 +20,8 @@
         "origin":"Email",
         "addressFrom":"str. Bastiliei",
         "addressTo":"Rue Belle",
-        "citryFrom":"Bucharest",
-        "citryTo":"Paris",
+        "cityFrom":"Bucharest",
+        "cityTo":"Paris",
         "postcodeFrom":"032321",
         "postcodeTo":"232323"      
     }

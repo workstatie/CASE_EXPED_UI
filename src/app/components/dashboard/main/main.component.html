@@ -2,21 +2,19 @@
 
   <span>Transport Hub</span>
   <span class="spacer"></span>
-  <mat-icon matBadge="15" matBadgeColor="warn">notifications</mat-icon>
+  <mat-icon [matBadge]="notificationsNumber" matBadgeColor="warn">notifications</mat-icon>
   <mat-icon class="icon" aria-hidden="false" aria-label="My profile">account_circle </mat-icon>
-
+  <button mat-button (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+    Logout
+  </button>
 </mat-toolbar>
 
 <div fxLayout="row" fxLayoutGap="10px" fxLayoutGap.xs="0" style="margin:20px;;">
   <div fxLayout="column" fxFlex="20%" fxLayoutAlign="start stretch" fxLayoutGap="30px">
-    <!-- <div>
-      <mat-card>
-        <outlook-init (onMailPicked)="validateMail($event)"></outlook-init>
-      </mat-card>
-    </div> -->
     <div>
       <mat-card>
-        <my-tickets></my-tickets>
+        <my-tickets (onTicketPicked)="loadRequest($event)" (onNewRequest)="createNewReq($event)"></my-tickets>
       </mat-card>
     </div>
     <div>
@@ -27,9 +25,11 @@
 
   <div fxLayout="column" fxFlex="80%">
     <mat-card>
-      <h2>Test Dashboard</h2>
+      <h2 *ngIf="dashboardView">Dashboard</h2>
       <div>
-        <validate-data *ngIf="validateData" [mail]='selectedMail'></validate-data>
+        <validate-data *ngIf="validateData" [ticket]='selectedTicket'></validate-data>
+        <view-request *ngIf="viewData" [ticket]='selectedTicket'></view-request>
+        <new-request  *ngIf="newRequest"></new-request>
       </div>
 
     </mat-card>

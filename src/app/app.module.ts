@@ -12,9 +12,6 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/dashboard/main/main.component';
-import { OutlookInitComponent } from './components/dashboard/outlook-init/outlook-init.component';
-import { SlackInitComponent } from './components/dashboard/slack-init/slack-init.component';
-import { SkypeInitComponent } from './components/dashboard/skype-init/skype-init.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,19 +19,35 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatBadgeModule} from '@angular/material/badge';
 import { ValidateDataComponent } from './components/dashboard/validate-data/validate-data.component';
-import { GetTicketsService } from './services/getTickets.service';
+import {  RequestService } from './services/requests.service';
 import { MyTicketsComponent } from './components/dashboard/my-tickets/my-tickets.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
+import { ViewRequestComponent } from './components/dashboard/view-request/view-request.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { SystemValuesService } from './services/systemValues.service';
+import {MatTableModule} from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { NewRequestComponent } from './components/dashboard/new-request/new-request.component';
+import {  NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MainComponent,
-    OutlookInitComponent,
-    SlackInitComponent,
-    SkypeInitComponent,
     ValidateDataComponent,
     MyTicketsComponent,
+    ViewRequestComponent,
+    NewRequestComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,9 +66,23 @@ import { HttpClientModule } from '@angular/common/http';
     MatCheckboxModule,
     MatBadgeModule,
     HttpClientModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    NgxMatDatetimePickerModule, 
+    NgxMatNativeDateModule, 
+    NgxMatTimepickerModule,
+    MatDatepickerModule,
+    MatSliderModule,
+    MatSelectModule,
+    MatDividerModule,
+    MatSlideToggleModule,
+    MatSnackBarModule
   ],
   providers: [
-    GetTicketsService
+    RequestService,
+    AuthService,
+    SystemValuesService
   ],
   bootstrap: [AppComponent]
 })

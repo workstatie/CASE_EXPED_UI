@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-material-components/datetime-picker": "^2.0.4",
     "@angular/animations": "~9.1.0",
     "@angular/cdk": "^9.2.0",
     "@angular/common": "~9.1.0",
@@ -22,6 +23,7 @@
     "@angular/platform-browser": "~9.1.0",
     "@angular/platform-browser-dynamic": "~9.1.0",
     "@angular/router": "~9.1.0",
+    "@okta/okta-auth-js": "2.11.0",
     "@uipath/robot": "^1.1.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",

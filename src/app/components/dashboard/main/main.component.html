@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
 
-  <span>Transport Hub</span>
+  <span (click)="goToDashboard()">Transport Hub</span>
   <span class="spacer"></span>
-  <mat-icon [matBadge]="notificationsNumber" matBadgeColor="warn">notifications</mat-icon>
-  <mat-icon class="icon" aria-hidden="false" aria-label="My profile">account_circle </mat-icon>
+  <mat-icon [matBadge]="notificationsNumber" (click)="openBottomSheet()" aria-label="Solutions" matBadgeColor="warn">notifications</mat-icon>
+  <mat-icon class="icon" aria-hidden="false" (click)="openDialog()" aria-label="My profile">account_circle </mat-icon>
   <button mat-button (click)="logout()">
     <mat-icon>exit_to_app</mat-icon>
     Logout
@@ -13,8 +13,18 @@
 <div fxLayout="row" fxLayoutGap="10px" fxLayoutGap.xs="0" style="margin:20px;;">
   <div fxLayout="column" fxFlex="20%" fxLayoutAlign="start stretch" fxLayoutGap="30px">
     <div>
-      <mat-card>
-        <my-tickets (onTicketPicked)="loadRequest($event)" (onNewRequest)="createNewReq($event)"></my-tickets>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+               <h3>My Requests</h3>
+            </mat-panel-title></mat-expansion-panel-header>
+        <my-tickets *ngIf="user" (onTicketPicked)="loadRequest($event)" (onNewRequest)="createNewReq($event)"></my-tickets>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-card style="margin-top:20px;">
+
+        <unassigned-req (onTicketPicked)="viewUnassignedRequest($event)" ></unassigned-req>
       </mat-card>
     </div>
     <div>
@@ -25,8 +35,11 @@
 
   <div fxLayout="column" fxFlex="80%">
     <mat-card>
-      <h2 *ngIf="dashboardView">Dashboard</h2>
       <div>
+
+        <charts *ngIf="dashboardView" ></charts>
+       
+        <solution-by-req *ngIf="solutionByReq" [ticket]='selectedTicket'></solution-by-req>
         <validate-data *ngIf="validateData" [ticket]='selectedTicket'></validate-data>
         <view-request *ngIf="viewData" [ticket]='selectedTicket'></view-request>
         <new-request  *ngIf="newRequest"></new-request>

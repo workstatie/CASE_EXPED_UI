@@ -1,0 +1,8 @@
+<h2 style="text-align: center;">Pending solutions</h2>
+<mat-nav-list >
+     <mat-list-item *ngFor="let solution of solutions">
+        <div mat-line (click)="openLink(solution.request_id)">
+            Solution Id: {{solution.request_id}} / delay : {{solution.delay}}
+        </div>
+    </mat-list-item>
+</mat-nav-list>

@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SystemValuesService } from 'src/app/services/systemValues.service';
 import { TruckTypeModel } from 'src/app/models/truckType.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RequestService } from 'src/app/services/requests.service';
 import { RequestsModel } from 'src/app/models/requests.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'new-request',
@@ -21,11 +22,13 @@ export class NewRequestComponent implements OnInit {
   constructor(
     private systemService: SystemValuesService,
     private snackBar: MatSnackBar,
-    private requestService: RequestService) { }
+    private requestService: RequestService,
+    public datepipe: DatePipe
+    ) { }
 
   //@Output() newTicketCreated: EventEmitter<any> = new EventEmitter<any>();
 
-
+  // @Input() ticket: RequestsModel;
   @ViewChild('picker') picker: any;
 
   ngOnInit(): void {
@@ -52,9 +55,12 @@ export class NewRequestComponent implements OnInit {
 
 
     if (this.enterNewRequestForm.valid) {
-      
+   
+      var solutionDate= new Date;
+    solutionDate.setHours(solutionDate.getHours() +2);
+
     const postNewRequest = new RequestsModel(
-      '000',
+      '000000',
       '1',
       this.enterNewRequestForm.controls['locationFrom'].value,
       this.enterNewRequestForm.controls['postcodeFrom'].value,
@@ -62,24 +68,25 @@ export class NewRequestComponent implements OnInit {
       this.enterNewRequestForm.controls['postcodeTo'].value,
       this.formatDate(this.enterNewRequestForm.controls['loadTime'].value),
       this.formatDate(this.enterNewRequestForm.controls['unloadTime'].value),
-      '21:05:31.3266667',
-      '2020-04-26 21:05:31',
+      this.datepipe.transform(solutionDate, 'HH:mm:ss'),
+      this.datepipe.transform(solutionDate, 'yyyy-MM-dd HH:mm:ss'),
       this.enterNewRequestForm.controls['goods_weight'].value,
       this.enterNewRequestForm.controls['goods_europallets'].value,
       this.truckTypes.findIndex(x => x.name === this.enterNewRequestForm.controls['truckType'].value).toString(),
       '1',
       this.enterNewRequestForm.controls['special_request'].value,
       'html',
-      '1',
+      this.systemService.getUser().ID,
       '0',
       '1'
     );
+    
       this.requestService.postNewRequest(postNewRequest).subscribe(res => console.log(res));
 
       this.snackBar.open('Form Submitted', 'close', {
         duration: 1500
       })
-      this.requestService.getMyRequests('1');
+      this.enterNewRequestForm.reset();
 
     } else {
       console.log('invalid form');

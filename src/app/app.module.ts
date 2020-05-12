@@ -22,7 +22,6 @@ import { ValidateDataComponent } from './components/dashboard/validate-data/vali
 import {  RequestService } from './services/requests.service';
 import { MyTicketsComponent } from './components/dashboard/my-tickets/my-tickets.component';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from './services/auth.service';
 import { ViewRequestComponent } from './components/dashboard/view-request/view-request.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { SystemValuesService } from './services/systemValues.service';
@@ -36,8 +35,29 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SolutionService } from './services/solution.service';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 
+import {MatListModule} from '@angular/material/list';
+import { CommonModule, DatePipe } from '@angular/common'; 
+import { MatDialogModule } from '@angular/material/dialog';
+import { SolutionBottomSheet } from './components/dashboard/main/popUps/bottomSharedSolution';
+import { SolutionByReqComponent } from './components/dashboard/solution-by-req/solution-by-req.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { MatNativeDateModule } from '@angular/material/core';
+import { CountdownModule } from 'ngx-countdown';
+import { ChartsComponent } from './components/dashboard/charts/charts.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { UnassignedReqComponent } from './components/dashboard/unassigned-req/unassigned-req.component';
+import { OktaAuthModule, OKTA_CONFIG } from '@okta/okta-angular';
+import { DialogComponent } from './components/dashboard/main/popUps/dialog';
 
+const oktaConfig = {
+  issuer: 'https://dev-444034.okta.com/oauth2/default',
+  clientId: '0oaaey4u12JF4FtWp4x6',
+  redirectUri: 'http://localhost:4200/login',
+  pkce: true
+}
 
 @NgModule({
   declarations: [
@@ -48,8 +68,13 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MyTicketsComponent,
     ViewRequestComponent,
     NewRequestComponent,
+    SolutionBottomSheet,
+    SolutionByReqComponent,
+    ChartsComponent,
+    UnassignedReqComponent
   ],
   imports: [
+    OktaAuthModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule, 
@@ -68,7 +93,6 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     HttpClientModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule,
     NgxMatDatetimePickerModule, 
     NgxMatNativeDateModule, 
     NgxMatTimepickerModule,
@@ -77,12 +101,27 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatSelectModule,
     MatDividerModule,
     MatSlideToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatBottomSheetModule,
+    MatSortModule,
+    CommonModule,
+    MatDialogModule,
+    MatListModule,
+    MatExpansionModule,
+    MatNativeDateModule,
+    CountdownModule,
+    NgxChartsModule,
+    MatDialogModule
   ],
   providers: [
     RequestService,
-    AuthService,
-    SystemValuesService
+    SystemValuesService,
+    SolutionService,
+    {provide : OKTA_CONFIG, useValue: oktaConfig},
+    DatePipe
+  ],
+  entryComponents:[
+    DialogComponent
   ],
   bootstrap: [AppComponent]
 })

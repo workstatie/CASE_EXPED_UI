@@ -1,32 +1,85 @@
-<h4>Validate Request</h4>
+<div [formGroup]="validationForm" *ngIf="truckTypes">
 
-<div [formGroup]="validationForm">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="40px">
+        <div fxFlex="50%">
+            <mat-form-field fxFlex="100%">
+                <mat-label>Original Email</mat-label>
+                <textarea matInput placeholder="original email" style="height: 500px;" formControlName="emailHtml"></textarea>
+            </mat-form-field>
+        </div>
+        <div fxFlex="50%">
+            <h4 style="align-content: center;">Location details</h4>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <mat-form-field>
+                    <mat-label>Location from</mat-label>
+                    <input matInput formControlName="locationFrom" >
+                </mat-form-field>
 
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
-      
+                <mat-form-field>
+                    <mat-label>Postcode from</mat-label>
+                    <input matInput formControlName="postcodeFrom" >
+                </mat-form-field>
+            </div>
+            <mat-form-field fxLayout="row">
+                <input formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" 
+                    placeholder="Loading Time" >
+                <mat-datepicker-toggle matSuffix [for]="loadPicker"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #loadPicker></ngx-mat-datetime-picker>
+            </mat-form-field>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <mat-form-field>
+                    <mat-label>Location to</mat-label>
+                    <input matInput formControlName="locationTo" >
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Postcode to</mat-label>
+                    <input matInput formControlName="postcodeTo" >
+                </mat-form-field>
+            </div>
+            <mat-form-field fxLayout="row">
+                <input matInput formControlName="unloadTime" [ngxMatDatetimePicker]="unloadPicker" 
+                    placeholder="Unloading Time" >
+                <mat-datepicker-toggle matSuffix [for]="unloadPicker"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #unloadPicker></ngx-mat-datetime-picker>
+            </mat-form-field>
+            <h4>Cargo details</h4>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <mat-form-field fxFlex="30%">
+                    <mat-label>Weight</mat-label>
+                    <input matInput formControlName="goods_weight" >
+                </mat-form-field>
+                <div fxFlex="70%">
+                    <span style="margin-top:12px;">EuroPallets</span>
+                    <mat-slider formControlName="goods_europallets" fxFlex min="0" max="10" step="1" thumbLabel="true">
+                    </mat-slider>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutGap="40px">
+                <mat-form-field fxFlex="30%">
+                    <mat-label>Truck Type</mat-label>
+                    <mat-select formControlName="truckType" required [(value)]="truckTypeSelected">
+                        <mat-option *ngFor="let truckType of truckTypes"  [value]="truckType.name" >
+                            {{truckType.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="70%">
+                    <mat-label>Leave a comment</mat-label>
+                    <textarea matInput placeholder="Enter any special request for this cargo"
+                        formControlName="special_request" ></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+
+
     </div>
+    <div fxLayout="row" fxLayoutGap="20px">
+        <!-- <section class="example-section">
+            <mat-checkbox class="example-margin" [(ngModel)]="checkSafeFleet">SafeFleet</mat-checkbox>
+            <mat-checkbox class="example-margin" [(ngModel)]="checkBursaTransport">Bursa Transport</mat-checkbox>
+        </section> -->
+        <button mat-raised-button color="primary" (click)="onSubmit()">Validate Offer</button>
 
 
-    <h4>Extracted Data</h4>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
-
-        <!-- <mat-form-field fxFlex="25%" class="example-full-width">
-            <mat-label>Location From</mat-label>
-            <input matInput [(ngModel)]="ticket.data.cityFrom" formControlName="locationFrom">
-        </mat-form-field>
-
-        <mat-form-field fxFlex="25%" class="example-full-width">
-            <mat-label>Location to</mat-label>
-            <input matInput [(ngModel)]="ticket.data.cityTo" formControlName="locationTo">
-        </mat-form-field> -->
     </div>
-</div>
-<div fxLayout="row"  fxLayoutGap="20px">
-<section class="example-section">
-    <mat-checkbox class="example-margin" [(ngModel)]="checkSafeFleet">SafeFleet</mat-checkbox>
-    <mat-checkbox class="example-margin" [(ngModel)]="checkBursaTransport">Bursa Transport</mat-checkbox>
-</section>
-<button mat-raised-button color="primary">Get Offers</button>
- 
-
-</div>

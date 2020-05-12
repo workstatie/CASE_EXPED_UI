@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+//import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -20,36 +20,36 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+  //  private authService: AuthService
   ) {
   }
 
   async ngOnInit() {
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/dashboard';
+    // this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/dashboard';
 
-    this.form = this.fb.group({
-      username: ['', Validators.email],
-      password: ['', Validators.required]
-    });
+    // this.form = this.fb.group({
+    //   username: ['', Validators.email],
+    //   password: ['', Validators.required]
+    // });
 
-    if (await this.authService.checkAuthenticated()) {
-      await this.router.navigate([this.returnUrl]);
-    }
+    // if (await this.authService.checkAuthenticated()) {
+    //   await this.router.navigate([this.returnUrl]);
+    // }
   }
 
-  async onSubmit() {
-    this.loginInvalid = false;
-    this.formSubmitAttempt = false;
-    if (this.form.valid) {
-      try {
-        const username = this.form.get('username').value;
-        const password = this.form.get('password').value;
-        await this.authService.login(username, password);
-      } catch (err) {
-        this.loginInvalid = true;
-      }
-    } else {
-      this.formSubmitAttempt = true;
-    }
+ async onSubmit() {
+  //   this.loginInvalid = false;
+  //   this.formSubmitAttempt = false;
+  //   if (this.form.valid) {
+  //     try {
+  //       const username = this.form.get('username').value;
+  //       const password = this.form.get('password').value;
+  //      // await this.authService.login(username, password);
+  //     } catch (err) {
+  //       this.loginInvalid = true;
+  //     }
+  //   } else {
+  //     this.formSubmitAttempt = true;
+  //   }
   }
 }

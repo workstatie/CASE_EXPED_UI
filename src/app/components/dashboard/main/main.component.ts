@@ -19,9 +19,9 @@ import { DialogComponent } from './popUps/dialog';
 export class MainComponent implements OnInit {
   viewData = false;
   validateData = false;
-  newRequest = false;
+  newRequest = true;
   solutionByReq = false;
-  dashboardView = true;
+  dashboardView = false;
 
   pendingSolutions: SolutionModel[];
   selectedTicket: RequestsModel;
@@ -40,6 +40,7 @@ export class MainComponent implements OnInit {
 
   async ngOnInit() {
     const user = await this.oktaAuth.getUser();
+
     this.systemValuesService.getUserFromDB(user.email).subscribe(res=>{
       this.user = res['recordset'][0];
       this.systemValuesService.setUser(this.user)
@@ -97,14 +98,14 @@ export class MainComponent implements OnInit {
     this.viewData = false;
   }
 
-  viewRequest(ticket: RequestsModel) {
-    this.selectedTicket = ticket;
-    this.validateData = false;
-    this.dashboardView = false;
-    this.solutionByReq = false;
-    this.newRequest = false;
-    this.viewData = true;
-  }
+  // viewRequest(ticket: RequestsModel) {
+  //   this.selectedTicket = ticket;
+  //   this.validateData = false;
+  //   this.dashboardView = false;
+  //   this.solutionByReq = false;
+  //   this.newRequest = false;
+  //   this.viewData = true;
+  // }
 
   loadSolutionByReq(reqId) {
     this.requestService.getRequestByID(reqId).subscribe(res => {

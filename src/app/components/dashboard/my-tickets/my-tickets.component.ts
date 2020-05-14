@@ -46,7 +46,8 @@ export class MyTicketsComponent implements OnInit {
   }
 
   ticketClicked(mail) {
-    this.onTicketPicked.emit(mail);
+
+    this.onTicketPicked.emit(mail.id);
   }
 
   newRequestClicked() {

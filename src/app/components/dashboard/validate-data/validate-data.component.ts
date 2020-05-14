@@ -37,6 +37,7 @@ export class ValidateDataComponent implements OnChanges {
   truckTypeSelected : String;
 
   ngOnChanges(): void {
+    console.log(this.ticket.email_html)
     this.truckTypes = this.systemService.getTruckTypes();
     this.truckTypeSelected = this.truckTypes[this.ticket.truck_type_id].name;
     this.truckTypeSelected = 'Truck Type 1';
@@ -86,7 +87,6 @@ export class ValidateDataComponent implements OnChanges {
         this.validationForm.controls['postcodeTo'].value,
         this.datepipe.transform(this.validationForm.controls['loadTime'].value, 'yyyy-MM-dd HH:mm:ss'),
         this.datepipe.transform(this.validationForm.controls['unloadTime'].value, 'yyyy-MM-dd HH:mm:ss'),
-       
         this.datepipe.transform(solutionDate, 'HH:mm:ss'),
         this.datepipe.transform(solutionDate, 'yyyy-MM-dd HH:mm:ss'),
         this.validationForm.controls['goods_weight'].value,
@@ -97,7 +97,7 @@ export class ValidateDataComponent implements OnChanges {
         'html',
         this.systemService.getUser().ID,
         '0',
-        '1'
+        '2'
       );
 
       this.requestService.putRequestById(postNewRequest, this.ticket.id).subscribe(res => console.log(res));

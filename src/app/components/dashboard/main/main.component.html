@@ -19,7 +19,7 @@
             <mat-panel-title>
                <h3>My Requests</h3>
             </mat-panel-title></mat-expansion-panel-header>
-        <my-tickets *ngIf="user" (onTicketPicked)="loadRequest($event)" (onNewRequest)="createNewReq($event)"></my-tickets>
+        <my-tickets *ngIf="user" (onTicketPicked)="loadSolutionByReq($event)" (onNewRequest)="createNewReq($event)"></my-tickets>
         </mat-expansion-panel>
       </mat-accordion>
       <mat-card style="margin-top:20px;">
@@ -41,7 +41,7 @@
        
         <solution-by-req *ngIf="solutionByReq" [ticket]='selectedTicket'></solution-by-req>
         <validate-data *ngIf="validateData" [ticket]='selectedTicket'></validate-data>
-        <view-request *ngIf="viewData" [ticket]='selectedTicket'></view-request>
+        <!-- <view-request *ngIf="viewData" [ticket]='selectedTicket'></view-request> -->
         <new-request  *ngIf="newRequest"></new-request>
       </div>
 

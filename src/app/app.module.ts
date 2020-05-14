@@ -22,7 +22,6 @@ import { ValidateDataComponent } from './components/dashboard/validate-data/vali
 import {  RequestService } from './services/requests.service';
 import { MyTicketsComponent } from './components/dashboard/my-tickets/my-tickets.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ViewRequestComponent } from './components/dashboard/view-request/view-request.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { SystemValuesService } from './services/systemValues.service';
 import {MatTableModule} from '@angular/material/table';
@@ -66,7 +65,6 @@ const oktaConfig = {
     MainComponent,
     ValidateDataComponent,
     MyTicketsComponent,
-    ViewRequestComponent,
     NewRequestComponent,
     SolutionBottomSheet,
     SolutionByReqComponent,

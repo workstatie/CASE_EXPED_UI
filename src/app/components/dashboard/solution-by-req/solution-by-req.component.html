@@ -57,8 +57,9 @@
 </mat-accordion>
 
 
-<h3 style="margin-top: 30px;">Available Solutions for this request</h3>
+
 <div *ngIf="solutions.length>0">
+    <h3 style="margin-top: 30px;">Available Solutions for this request</h3>
     <table mat-table [dataSource]="solutions">
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
@@ -91,5 +92,8 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <button style="margin-top:20px;" mat-raised-button (click)="submitSolution()" color="primary">Send Solution</button>
+    <button [disabled]="!this.selection.hasValue()"style="margin-top:20px;"  mat-raised-button (click)="submitSolution()" color="primary">Send Solution</button>
+</div>
+<div *ngIf="solutions.length===0">
+   <h3> No current solution for this request</h3>
 </div>

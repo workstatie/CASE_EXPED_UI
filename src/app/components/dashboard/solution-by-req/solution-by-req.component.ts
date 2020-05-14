@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
 import { CountdownModule, CountdownComponent } from 'ngx-countdown';
 import { SelectionModel } from '@angular/cdk/collections';
+import { RequestService } from 'src/app/services/requests.service';
 
 
 @Component({
@@ -23,8 +24,6 @@ export class SolutionByReqComponent implements OnChanges {
   dataSource = new MatTableDataSource(this.solutions);
   selection = new SelectionModel<SolutionModel>(true, []);
 
-
-
   counterConfig = {
     leftTime: 9000,
     size: 'large',
@@ -32,7 +31,9 @@ export class SolutionByReqComponent implements OnChanges {
   };
 
   constructor(
-    private solutionService: SolutionService) { }
+    private solutionService: SolutionService,
+    private requestService: RequestService,
+    ) { }
 
 
   ngOnChanges(): void {
@@ -55,8 +56,11 @@ export class SolutionByReqComponent implements OnChanges {
 
   
   submitSolution(){
-    console.log(this.selection.selected[0].id)
 
+   // console.log(this.selection.selected[0].id)
+    this.requestService.updateStatusReqById(this.ticket.id,3).subscribe(res =>{
+      console.log(res)
+    })
   }
 
 

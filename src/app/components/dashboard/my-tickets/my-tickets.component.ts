@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { RequestService } from 'src/app/services/requests.service';
 import { MatSort } from '@angular/material/sort';
 import { UserModel } from 'src/app/models/user.model';
+import {environment} from '../../../../environments/environment'
 
 @Component({
   selector: 'my-tickets',
@@ -31,14 +32,24 @@ export class MyTicketsComponent implements OnInit {
   @Output() onTicketPicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() onNewRequest: EventEmitter<any> = new EventEmitter<any>();
   user: UserModel;
+  interval: any;
 
   constructor(
-    private ticketService: RequestService,
+    private requestService: RequestService,
     private systemService: SystemValuesService) { }
 
   async ngOnInit() {
+ 
     this.user=  this.systemService.getUser();
+  
     this.getTicketsById(this.user.ID);
+    this.requestService.myRequests$.subscribe( data => {
+       this.myTickets = data;
+    })
+    this.interval = setInterval( () =>{
+      this.getTicketsById(this.user.ID);
+    }, environment.refreshRate);
+
   }
 
   ngAfterViewInit(): void {
@@ -55,15 +66,12 @@ export class MyTicketsComponent implements OnInit {
   }
 
   getTicketsById(id) {
-    // this.showSpinner=true;
 
     this.myTicketsLoaded = true;
-    this.ticketService.getMyRequests(id).subscribe(res => {
-      this.myTickets = res['recordset'];
-      this.dataSource = new MatTableDataSource(this.myTickets);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    this.requestService.getMyRequests(id);
+    this.dataSource = new MatTableDataSource(this.myTickets);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
 
   }
 

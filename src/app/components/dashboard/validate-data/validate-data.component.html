@@ -1,9 +1,9 @@
 <div [formGroup]="validationForm" *ngIf="truckTypes">
 
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="40px">
-        <div fxFlex="50%">
+        <div  fxFlex="50%">
             <h4>Original email</h4>
-            <div [innerHtml]="ticket.email_html"></div>
+            <mat-card class="originalEmail" [innerHtml]="ticket.email_html"></mat-card>
         </div>
         <div fxFlex="50%">
             <h4 style="align-content: center;">Location details</h4>

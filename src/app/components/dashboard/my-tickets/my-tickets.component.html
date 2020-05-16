@@ -7,7 +7,7 @@
         </button>
     </div>
 
-    <mat-spinner [diameter]="40" *ngIf="showSpinner"></mat-spinner>
+    <mat-spinner [diameter]="40" *ngIf="myTickets.length<1"></mat-spinner>
     <div style="margin-top: 20px;">
 
         <table mat-table [dataSource]="dataSource" matSort>

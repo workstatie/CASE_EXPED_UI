@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiUrl: 'http://localhost:4200/api/',
+  refreshRate: 2000,
+  oktaClient: '0oaaey4u12JF4FtWp4x6',
+  oktaRedirect :'http://localhost:4200/login'
 };
 
 /*

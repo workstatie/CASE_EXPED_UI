@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { RequestService } from 'src/app/services/requests.service';
 import { MatSort } from '@angular/material/sort';
+import {environment} from '../../../../environments/environment'
 
 @Component({
   selector: 'unassigned-req',
@@ -21,21 +22,30 @@ export class UnassignedReqComponent implements OnInit {
 
   displayedColumns: string[] = ['ID', 'Status'];
   dataSource = new MatTableDataSource(this.myTickets);
-
+  interval : any;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   @Output() onTicketPicked: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
-    private ticketService: RequestService,
+    private requestService: RequestService,
     private systemService: SystemValuesService) { }
 
   ngOnInit() {
+   
 
   }
+
   ngAfterViewInit(): void {
-    this.getTickets();
+    this.getUnassignedTickets();
+    this.requestService.unassignedRequests$.subscribe( data => {
+       this.myTickets = data;
+    })
+    this.interval = setInterval( () =>{
+      this.getUnassignedTickets();
+    }, environment.refreshRate);
+
     this.statusValues = this.systemService.getStatusTypes();
   }
 
@@ -44,18 +54,30 @@ export class UnassignedReqComponent implements OnInit {
   }
 
 
-  getTickets() {
-    // this.showSpinner=true;
+  
+  getUnassignedTickets() {
 
     this.myTicketsLoaded = true;
-    this.ticketService.getMyRequests('NULL').subscribe(res => {
-      this.myTickets = res['recordset'];
-      this.dataSource = new MatTableDataSource(this.myTickets);
+    this.requestService.getUnassignedRequests();
+    this.dataSource = new MatTableDataSource(this.myTickets);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
-
   }
+
+  // getTickets() {
+  //   // this.showSpinner=true;
+
+    
+
+  //   this.myTicketsLoaded = true;
+  //   this.requestService.getMyRequests('NULL').subscribe(res => {
+  //     this.myTickets = res['recordset'];
+  //     this.dataSource = new MatTableDataSource(this.myTickets);
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;
+  //   });
+
+  // }
 
 
 }

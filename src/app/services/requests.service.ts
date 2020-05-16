@@ -2,33 +2,55 @@ import { Injectable } from '@angular/core';
 import { RequestsModel } from '../models/requests.model';
 import { HttpClient } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment'
+import { map } from "rxjs/operators"; 
+
 
 @Injectable()
 export class RequestService {
 
-    myRequests: RequestsModel[] = [];
-    backednUrl: string = 'http://localhost:4200/api/'
+    // myRequests: RequestsModel[] = [];
+    public myRequests$: BehaviorSubject<any> = new BehaviorSubject({});
+    public unassignedRequests$: BehaviorSubject<any> = new BehaviorSubject({});
 
     constructor(private http: HttpClient) {
     }
 
-
     getMyRequests(userId) {
-  
         const params = new HttpParams().set('assigned_user_id', userId);
-        return this.http.get(this.backednUrl + 'GetRequests', { params })
-        
+        this.http.get(environment.apiUrl + 'GetRequests', { params })
+          .pipe(map(res => res['recordset'])).subscribe( (res : RequestsModel[]) =>{
+           // data = res['recordset'];
+           this.myRequests$.next(res);
+        });
     }
+
+    getUnassignedRequests() {
+            const params = new HttpParams().set('assigned_user_id', 'NULL');
+            this.http.get(environment.apiUrl + 'GetRequests', { params })
+              .pipe(map(res => res['recordset'])).subscribe( (res : RequestsModel[]) =>{
+               this.unassignedRequests$.next(res);
+            });
+    }
+
+
+
+
+    // getMyRequests(userId) {  
+    //     const params = new HttpParams().set('assigned_user_id', userId);
+    //     return this.http.get(environment.apiUrl + 'GetRequests', { params })
+    // }
 
 
     getRequestByID(id) {
         const params = new HttpParams().set('id', id);
-        return this.http.get(this.backednUrl + 'GetRequestDetails', { params })
+        return this.http.get(environment.apiUrl + 'GetRequestDetails', { params })
     }
 
 
     postNewRequest(request: RequestsModel) {
-        return this.http.post(this.backednUrl + 'NewRequest', {
+        return this.http.post(environment.apiUrl + 'NewRequest', {
             customer_id: request.customer_id,
             from_address_city: request.from_address_city,
             from_address_postcode: request.from_address_postcode,
@@ -52,7 +74,7 @@ export class RequestService {
 
     putRequestById(request: RequestsModel, id) {
         const params = new HttpParams().set('id', id);
-        return this.http.put(this.backednUrl + 'UpdateRequest', {
+        return this.http.put(environment.apiUrl + 'UpdateRequest', {
             customer_id: request.customer_id,
             from_address_city: request.from_address_city,
             from_address_postcode: request.from_address_postcode,
@@ -77,7 +99,7 @@ export class RequestService {
     updateStatusReqById(id, status) {
         const params = new HttpParams().set('id', id);
 
-        return this.http.patch(this.backednUrl + 'UpdateRequest', {
+        return this.http.patch(environment.apiUrl + 'UpdateRequest', {
             request_status_type_id: status
         }, { params });
     }

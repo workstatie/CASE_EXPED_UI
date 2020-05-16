@@ -50,11 +50,11 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { UnassignedReqComponent } from './components/dashboard/unassigned-req/unassigned-req.component';
 import { OktaAuthModule, OKTA_CONFIG } from '@okta/okta-angular';
 import { DialogComponent } from './components/dashboard/main/popUps/dialog';
-
+import {environment} from '../environments/environment'
 const oktaConfig = {
   issuer: 'https://dev-444034.okta.com/oauth2/default',
-  clientId: '0oaaey4u12JF4FtWp4x6',
-  redirectUri: 'http://localhost:4200/login',
+  clientId: environment.oktaClient,
+  redirectUri: environment.oktaRedirect,
   pkce: true
 }
 

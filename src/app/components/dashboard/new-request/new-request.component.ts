@@ -42,7 +42,7 @@ export class NewRequestComponent implements OnInit {
       postcodeFrom: new FormControl(null, Validators.required),
       loadTime: new FormControl(null, Validators.required),
       unloadTime: new FormControl(null, Validators.required),
-      goods_weight: new FormControl(null, Validators.required),
+      goods_weight: new FormControl(null,),
       goods_europallets: new FormControl(null, Validators.required),
       truckType: new FormControl(null, Validators.required),
       special_request: new FormControl(null, Validators.required),

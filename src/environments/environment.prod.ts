@@ -3,5 +3,5 @@ export const environment = {
   apiUrl: 'http://localhost/api/',
   refreshRate: 2000,
   oktaClient: '0oac15y5vPpeoqWWQ4x6',
-  oktaRedirect :'http://localhost/transportHub/login'
+  oktaRedirect :'http://localhost/login'
 };

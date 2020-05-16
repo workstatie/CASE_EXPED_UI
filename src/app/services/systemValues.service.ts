@@ -5,11 +5,11 @@ import { HttpParams } from '@angular/common/http';
 import { TruckTypeModel } from '../models/truckType.model';
 import { StatusTypeModel } from '../models/statusType.model';
 import { UserModel } from '../models/user.model';
+import { environment } from '../../environments/environment'
 
 @Injectable()
 export class SystemValuesService {
 
-    backednUrl: string = 'http://localhost:4200/api/'
     truckTypes: TruckTypeModel[] = [];
     statusTypes: StatusTypeModel[] = [];
     userLoggedIn : UserModel;
@@ -37,16 +37,16 @@ export class SystemValuesService {
 
      getUserFromDB(userEmail) {
           const params = new HttpParams().set('email', userEmail);
-          return this.http.get(this.backednUrl + 'GetUserByEmail', { params });
+          return this.http.get(environment.apiUrl + 'GetUserByEmail', { params });
      }
 
 
     loadTruckTypes() {
-        return this.http.get(this.backednUrl + 'GetAllTruckTypes')
+        return this.http.get(environment.apiUrl + 'GetAllTruckTypes')
     }
 
     loadStatusTypes() {
-        return this.http.get(this.backednUrl + 'GetStatusTypes')
+        return this.http.get(environment.apiUrl + 'GetStatusTypes')
     }
 
     getTruckTypes() {

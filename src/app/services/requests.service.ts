@@ -53,10 +53,10 @@ export class RequestService {
         return this.http.post(environment.apiUrl + 'NewRequest', {
             customer_id: request.customer_id,
             from_address_city: request.from_address_city,
-            countryFrom: request.from_address_country,
+            from_address_country: request.from_address_country,
             from_address_postcode: request.from_address_postcode,
             to_address_city: request.to_address_city,
-            to_address_country: request.to_address_city,
+            to_address_country: request.to_address_country,
             to_address_postcode: request.to_address_postcode,
             load_datetime: request.load_datetime,
             unload_datetime: request.unload_datetime,
@@ -69,7 +69,6 @@ export class RequestService {
             special_requirments: request.special_requirments,
             email_html: request.email_html,
             assigned_user_id: request.assigned_user_id,
-            completed: request.completed,
             request_status_type_id: request.request_status_type_id
         });
     }
@@ -80,7 +79,9 @@ export class RequestService {
             customer_id: request.customer_id,
             from_address_city: request.from_address_city,
             from_address_postcode: request.from_address_postcode,
+            from_address_country: request.from_address_country,
             to_address_city: request.to_address_city,
+            to_address_country : request.to_address_country,
             to_address_postcode: request.to_address_postcode,
             load_datetime: request.load_datetime,
             unload_datetime: request.unload_datetime,
@@ -93,7 +94,6 @@ export class RequestService {
             special_requirments: request.special_requirments,
             email_html: request.email_html,
             assigned_user_id: request.assigned_user_id,
-            completed: request.completed,
             request_status_type_id: request.request_status_type_id
         }, { params });
     }

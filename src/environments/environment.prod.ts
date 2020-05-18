@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost/api/',
-  robotUrl: 'http://localhost/robot/',
+  apiUrl: 'https://192.168.0.111/api/',
+  robotUrl: 'https://192.168.0.111/robot/',
   refreshRate: 2000,
   oktaClient: '0oac15y5vPpeoqWWQ4x6',
-  oktaRedirect :'http://localhost/login'
+  oktaRedirect :'https://192.168.0.111/login'
 };

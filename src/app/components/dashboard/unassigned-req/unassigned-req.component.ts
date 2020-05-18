@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { RequestService } from 'src/app/services/requests.service';
 import { MatSort } from '@angular/material/sort';
 import {environment} from '../../../../environments/environment'
+import { CustomerModel } from 'src/app/models/customer.model';
 
 @Component({
   selector: 'unassigned-req',
@@ -23,6 +24,7 @@ export class UnassignedReqComponent implements OnInit {
   displayedColumns: string[] = ['ID', 'Status'];
   dataSource = new MatTableDataSource(this.myTickets);
   interval : any;
+  customers : CustomerModel[];
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -39,6 +41,8 @@ export class UnassignedReqComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.getUnassignedTickets();
+    this.customers  = this.systemService.getCustomers();
+    console.log(this.customers[0])
     this.requestService.unassignedRequests$.subscribe( data => {
        this.myTickets = data;
     })

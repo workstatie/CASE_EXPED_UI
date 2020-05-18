@@ -8,27 +8,43 @@
         <div fxFlex="50%">
             <h4 style="align-content: center;">Location details</h4>
             <div fxLayout="row" fxLayoutGap="20px">
+              
+
                 <mat-form-field>
                     <mat-label>Location from</mat-label>
                     <input matInput formControlName="locationFrom" >
+                </mat-form-field>
+                <mat-form-field >
+                    <mat-label>Country from</mat-label>
+                    <input matInput formControlName="countryFrom" >
                 </mat-form-field>
 
                 <mat-form-field>
                     <mat-label>Postcode from</mat-label>
                     <input matInput formControlName="postcodeFrom" >
                 </mat-form-field>
+               
+                
             </div>
-            <mat-form-field fxLayout="row">
-                <input formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" 
+            <mat-form-field fxLayout="row" fxLayoutGap="20px">
+                <input  formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" 
                     placeholder="Loading Time" >
                 <mat-datepicker-toggle matSuffix [for]="loadPicker"></mat-datepicker-toggle>
                 <ngx-mat-datetime-picker #loadPicker></ngx-mat-datetime-picker>
+
+
             </mat-form-field>
             <div fxLayout="row" fxLayoutGap="20px">
                 <mat-form-field>
                     <mat-label>Location to</mat-label>
                     <input matInput formControlName="locationTo" >
                 </mat-form-field>
+
+                <mat-form-field >
+                    <mat-label>Country to</mat-label>
+                    <input matInput formControlName="countryTo" >
+                </mat-form-field>
+
                 <mat-form-field>
                     <mat-label>Postcode to</mat-label>
                     <input matInput formControlName="postcodeTo" >

@@ -1,20 +1,20 @@
 
 export class CustomerModel {
 
-    ID: string;
-    crm_id: string;  
+    id: string;
+    name: string;  
     email: string;
     phone: string;
 
     constructor(
-        ID: string,
-        crm_id: string,
+        id: string,
+        name: string,
         email: string,
         phone: string,
         
     ) {
-        this.ID =ID;
-        this.crm_id =crm_id;
+        this.id =id;
+        this.name =name;
         this.email =email;
         this.phone =phone;
     }     

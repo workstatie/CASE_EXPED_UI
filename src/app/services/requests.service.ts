@@ -53,8 +53,10 @@ export class RequestService {
         return this.http.post(environment.apiUrl + 'NewRequest', {
             customer_id: request.customer_id,
             from_address_city: request.from_address_city,
+            countryFrom: request.from_address_country,
             from_address_postcode: request.from_address_postcode,
             to_address_city: request.to_address_city,
+            to_address_country: request.to_address_city,
             to_address_postcode: request.to_address_postcode,
             load_datetime: request.load_datetime,
             unload_datetime: request.unload_datetime,

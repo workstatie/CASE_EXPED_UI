@@ -3,8 +3,10 @@ export class RequestsModel {
     id: string;
     customer_id : string;
     from_address_city :  string ;
+    from_address_country :  string ;
     from_address_postcode :  string ;
     to_address_city :  string ;
+    to_address_country :  string ;
     to_address_postcode :  string ;
     load_datetime :  string ;
     unload_datetime :  string ;
@@ -19,13 +21,16 @@ export class RequestsModel {
     assigned_user_id :  string ;
     completed :  string ;
     request_status_type_id :  string 
-
+    datetime_created:string
+    
     constructor(
         id: string,
         customer_id : string,
         from_address_city :  string ,
+        from_address_country :  string ,
         from_address_postcode :  string ,
         to_address_city :  string ,
+        to_address_country :  string ,
         to_address_postcode :  string ,
         load_datetime :  string ,
         unload_datetime :  string ,
@@ -46,6 +51,9 @@ export class RequestsModel {
         this.customer_id  =customer_id;
         this.from_address_city=from_address_city;
         this.from_address_postcode=from_address_postcode;
+        this.to_address_city=to_address_city;
+        this.from_address_country=from_address_country
+        this.to_address_country=to_address_country
         this.to_address_city=to_address_city;
         this.to_address_postcode=to_address_postcode;
         this.load_datetime=load_datetime;

@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RequestService } from 'src/app/services/requests.service';
 import { RequestsModel } from 'src/app/models/requests.model';
 import { DatePipe } from '@angular/common';
+import { StatusTypeModel } from 'src/app/models/statusType.model';
 
 @Component({
   selector: 'new-request',
@@ -19,6 +20,7 @@ export class NewRequestComponent implements OnInit {
   assignToCurrentUser: Boolean = true;
   dateNow = new Date();
 
+  
   constructor(
     private systemService: SystemValuesService,
     private snackBar: MatSnackBar,
@@ -38,6 +40,8 @@ export class NewRequestComponent implements OnInit {
     this.enterNewRequestForm = new FormGroup({
       locationFrom: new FormControl(null, Validators.required),
       locationTo: new FormControl(null, Validators.required),
+      countryTo: new FormControl(null, Validators.required),
+      countryFrom: new FormControl(null, Validators.required),
       postcodeTo: new FormControl(null, Validators.required),
       postcodeFrom: new FormControl(null, Validators.required),
       loadTime: new FormControl(null, Validators.required),
@@ -48,6 +52,8 @@ export class NewRequestComponent implements OnInit {
       special_request: new FormControl(null, Validators.required),
     });
   }
+
+
 
   onSubmit() {
     const validationTime = new Date();
@@ -63,8 +69,10 @@ export class NewRequestComponent implements OnInit {
       '000000',
       '1',
       this.enterNewRequestForm.controls['locationFrom'].value,
+      this.enterNewRequestForm.controls['countryFrom'].value,
       this.enterNewRequestForm.controls['postcodeFrom'].value,
       this.enterNewRequestForm.controls['locationTo'].value,
+      this.enterNewRequestForm.controls['countryTo'].value,
       this.enterNewRequestForm.controls['postcodeTo'].value,
       this.formatDate(this.enterNewRequestForm.controls['loadTime'].value),
       this.formatDate(this.enterNewRequestForm.controls['unloadTime'].value),

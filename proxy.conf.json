@@ -4,8 +4,10 @@
       "secure": false,
       "changeOrigin": true
     },
-    "/robot": {
+    "/robot/*": {
       "target": "http://localhost:3000",
-      "secure": false
+      "secure": false,
+      "changeOrigin": true
+
     }
   }

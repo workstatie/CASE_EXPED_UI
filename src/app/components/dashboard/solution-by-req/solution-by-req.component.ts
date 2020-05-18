@@ -75,7 +75,11 @@ export class SolutionByReqComponent implements OnChanges {
   submitSolution(){
 
    // console.log(this.selection.selected[0].id)
-    this.requestService.updateStatusReqById(this.request.id,3).subscribe(res =>{
+    this.requestService.updateStatusReqById(this.request.id,4).subscribe(res =>{
+      console.log('solution sent')
+    })
+
+    this.solutionService.robotSendRequests("False").subscribe(res =>{
       console.log(res)
     })
   }

@@ -99,11 +99,19 @@ export class RequestService {
     }
 
     updateStatusReqById(id, status) {
+        
+
         const params = new HttpParams().set('id', id);
 
         return this.http.patch(environment.apiUrl + 'UpdateRequest', {
             request_status_type_id: status
         }, { params });
+    }
+
+     robotSendRequests(repeat){
+        const params = new HttpParams().set('processName',"HelloWorldMGA");
+        return this.http.post(environment.robotUrl + 'StartRobot', { repeat : repeat},
+            { params } )
     }
 
 

@@ -19,12 +19,10 @@ export class RequestsModel {
     special_requirments :  string ;
     email_html :  string ;
     assigned_user_id :  string ;
-    completed :  string ;
     request_status_type_id :  string 
     datetime_created:string
     
     constructor(
-        id: string,
         customer_id : string,
         from_address_city :  string ,
         from_address_country :  string ,
@@ -43,16 +41,14 @@ export class RequestsModel {
         special_requirments :  string ,
         email_html :  string ,
         assigned_user_id :  string ,
-        completed :  string ,
         request_status_type_id :  string 
 
     ) {
-        this.id =id;
         this.customer_id  =customer_id;
         this.from_address_city=from_address_city;
+        this.from_address_country=from_address_country
         this.from_address_postcode=from_address_postcode;
         this.to_address_city=to_address_city;
-        this.from_address_country=from_address_country
         this.to_address_country=to_address_country
         this.to_address_city=to_address_city;
         this.to_address_postcode=to_address_postcode;
@@ -67,7 +63,6 @@ export class RequestsModel {
         this.special_requirments=special_requirments;
         this.email_html=email_html;
         this.assigned_user_id=assigned_user_id;
-        this.completed=completed;
         this.request_status_type_id=request_status_type_id;
     }
 }

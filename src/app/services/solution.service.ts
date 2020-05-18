@@ -23,4 +23,11 @@ export class SolutionService {
         return this.http.get(environment.apiUrl + 'GetSolutionForRequestID', { params } )
     }
 
+  
+    robotSendRequests(repeat){
+        const params = new HttpParams().set('processName',"CASE.EXPED.Check.Request.Responses");
+        return this.http.post(environment.robotUrl + 'StartRobot', { repeat : repeat},
+            { params } )
+    }
+
 }

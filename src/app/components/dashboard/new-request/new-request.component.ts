@@ -66,7 +66,6 @@ export class NewRequestComponent implements OnInit {
     solutionDate.setHours(solutionDate.getHours() +2);
 
     const postNewRequest = new RequestsModel(
-      '000000',
       '1',
       this.enterNewRequestForm.controls['locationFrom'].value,
       this.enterNewRequestForm.controls['countryFrom'].value,
@@ -85,8 +84,7 @@ export class NewRequestComponent implements OnInit {
       this.enterNewRequestForm.controls['special_request'].value,
       'html',
       this.systemService.getUser().ID,
-      '0',
-      '1'
+      '2'
     );
     
       this.requestService.postNewRequest(postNewRequest).subscribe(res => console.log(res));

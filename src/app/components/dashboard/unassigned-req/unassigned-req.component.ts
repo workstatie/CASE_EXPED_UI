@@ -42,7 +42,6 @@ export class UnassignedReqComponent implements OnInit {
   ngAfterViewInit(): void {
     this.getUnassignedTickets();
     this.customers  = this.systemService.getCustomers();
-    console.log(this.customers[0])
     this.requestService.unassignedRequests$.subscribe( data => {
        this.myTickets = data;
     })

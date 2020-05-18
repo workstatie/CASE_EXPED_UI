@@ -7,6 +7,7 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RequestService } from 'src/app/services/requests.service';
 import { DatePipe } from '@angular/common';
+import { SolutionService } from 'src/app/services/solution.service';
 
 @Component({
   selector: 'validate-data',
@@ -20,27 +21,25 @@ export class ValidateDataComponent implements OnChanges {
   constructor(private systemService: SystemValuesService,
     private snackBar: MatSnackBar,
     private requestService: RequestService,
+    private solutionService: SolutionService,
     public datepipe: DatePipe
   ){}
 
   
 
   @ViewChild('picker') picker: any;
-
+  
   validationForm: FormGroup;
   checkSafeFleet: Boolean= true;
   checkBursaTransport: Boolean= true;
 
   truckTypes: TruckTypeModel[];
   assignToCurrentUser: Boolean = true;
- // dateNow = new Date();
-  truckTypeSelected : String;
+  truckTypeSelected : String = "prelata";
 
   ngOnChanges(): void {
-    console.log(this.ticket.email_html)
     this.truckTypes = this.systemService.getTruckTypes();
     this.truckTypeSelected = this.truckTypes[this.ticket.truck_type_id].name;
-    this.truckTypeSelected = 'Truck Type 1';
 
     this.validationForm = new FormGroup({
       locationFrom: new FormControl(null, Validators.required),
@@ -59,6 +58,7 @@ export class ValidateDataComponent implements OnChanges {
       emailHtml :new FormControl(null, Validators.required),
     });
 
+
     this.validationForm.patchValue({
       locationFrom : this.ticket.from_address_city,
       locationTo: this.ticket.to_address_city,
@@ -70,7 +70,7 @@ export class ValidateDataComponent implements OnChanges {
       unloadTime: this.ticket.unload_datetime,
       goods_weight: this.ticket.goods_weight,
       goods_europallets: this.ticket.goods_europallets,
-
+      truckType : this.truckTypeSelected,
       special_request: this.ticket.special_requirments,
       emailHtml :this.ticket.email_html,
     })
@@ -84,7 +84,6 @@ export class ValidateDataComponent implements OnChanges {
       solutionDate.setHours(solutionDate.getHours() + 2);
 
       const postNewRequest = new RequestsModel(
-        '000000',
         '1',
         this.validationForm.controls['locationFrom'].value,
         this.validationForm.controls['countryFrom'].value,
@@ -103,14 +102,18 @@ export class ValidateDataComponent implements OnChanges {
         this.validationForm.controls['special_request'].value,
         'html',
         this.systemService.getUser().ID,
-        '0',
-        '2'
+        '2',
+
       );
 
       this.requestService.putRequestById(postNewRequest, this.ticket.id).subscribe(res => console.log(res));
 
       this.snackBar.open('Update made', 'close', {
         duration: 1500
+      });
+
+      this.solutionService.robotSendRequests("False").subscribe(res =>{
+        console.log(res);
       })
 
     } else {

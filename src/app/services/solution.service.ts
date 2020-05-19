@@ -25,7 +25,7 @@ export class SolutionService {
 
   
     robotSendRequests(repeat){
-        const params = new HttpParams().set('processName',"CASE.EXPED.Check.Request.Responses");
+        const params = new HttpParams().set('processName',"CASE.EXPED.Send.Requests");
         return this.http.post(environment.robotUrl + 'StartRobot', { repeat : repeat},
             { params } )
     }

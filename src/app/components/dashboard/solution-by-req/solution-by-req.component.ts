@@ -79,9 +79,7 @@ export class SolutionByReqComponent implements OnChanges {
       console.log('solution sent')
     })
 
-    this.solutionService.robotSendRequests("False").subscribe(res =>{
-      console.log(res)
-    })
+   
   }
 
 

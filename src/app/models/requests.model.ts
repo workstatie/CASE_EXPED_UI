@@ -50,7 +50,6 @@ export class RequestsModel {
         this.from_address_postcode=from_address_postcode;
         this.to_address_city=to_address_city;
         this.to_address_country=to_address_country
-        this.to_address_city=to_address_city;
         this.to_address_postcode=to_address_postcode;
         this.load_datetime=load_datetime;
         this.unload_datetime=unload_datetime;

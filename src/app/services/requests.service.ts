@@ -108,11 +108,7 @@ export class RequestService {
         }, { params });
     }
 
-     robotSendRequests(repeat){
-        const params = new HttpParams().set('processName',"HelloWorldMGA");
-        return this.http.post(environment.robotUrl + 'StartRobot', { repeat : repeat},
-            { params } )
-    }
+   
 
 
 }

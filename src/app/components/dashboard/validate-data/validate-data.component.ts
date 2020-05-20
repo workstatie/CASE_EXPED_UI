@@ -55,7 +55,7 @@ export class ValidateDataComponent implements OnChanges {
       goods_europallets: new FormControl(null, Validators.required),
       truckType: new FormControl(null, Validators.required),
       special_request: new FormControl(null, Validators.required),
-      emailHtml :new FormControl(null, Validators.required),
+      emailHtml :new FormControl(null, ),
     });
 
 

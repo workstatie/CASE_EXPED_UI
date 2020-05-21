@@ -39,6 +39,8 @@ export class ValidateDataComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.truckTypes = this.systemService.getTruckTypes();
+    console.log(this.truckTypes)
+    console.log(this.ticket)
     this.truckTypeSelected = this.truckTypes[this.ticket.truck_type_id].name;
 
     this.validationForm = new FormGroup({
@@ -55,7 +57,7 @@ export class ValidateDataComponent implements OnChanges {
       goods_europallets: new FormControl(null, Validators.required),
       truckType: new FormControl(null, Validators.required),
       special_request: new FormControl(null, Validators.required),
-      emailHtml :new FormControl(null, Validators.required),
+      emailHtml :new FormControl(null),
     });
 
 
@@ -84,7 +86,7 @@ export class ValidateDataComponent implements OnChanges {
       solutionDate.setHours(solutionDate.getHours() + 2);
 
       const postNewRequest = new RequestsModel(
-        '1',
+        this.ticket.customer_id,
         this.validationForm.controls['locationFrom'].value,
         this.validationForm.controls['countryFrom'].value,
         this.validationForm.controls['postcodeFrom'].value,

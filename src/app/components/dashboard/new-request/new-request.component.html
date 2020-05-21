@@ -1,24 +1,31 @@
 
-
+<div [formGroup]="enterNewRequestForm">
     <h2>Add a new Request</h2>
-
-    <div fxLayout="row" fxLayout.xs="column" >
-        <form class="example-form">
+    
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        
             <mat-form-field>
                 <mat-label>Customer Name</mat-label>
-                <input type="text" matInput [formControl]="customerSearch" [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <input type="text" matInput formControlName="customerSearch" [matAutocomplete]="auto" (keyup.enter)="createNewClient()" >
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="createNewClient()">
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                         {{option.name}}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <button style="margin-left:20px;" mat-mini-fab color="primary" (click)="createNewClient()">
-                <mat-icon>add</mat-icon>
-            </button>
-        </form>
+        
+            <mat-form-field *ngIf="opencustomercontactfield">
+                <mat-label>Customer Contact</mat-label>
+                <input type="text" matInput formControlName="customerContactSearch" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayContactFn">
+                    <mat-option *ngFor="let option2 of filteredContactOptions | async" [value]="option2">
+                        {{option2.name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
     </div>
-    <div [formGroup]="enterNewRequestForm">
+    
     <h4>Location details</h4>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field fxFlex="25%" class="example-full-width">

@@ -7,6 +7,7 @@ import { StatusTypeModel } from '../models/statusType.model';
 import { UserModel } from '../models/user.model';
 import { environment } from '../../environments/environment'
 import { CustomerModel } from '../models/customer.model';
+import { CustomerContactModel } from '../models/customercontact.model';
 
 @Injectable()
 export class SystemValuesService {
@@ -15,6 +16,8 @@ export class SystemValuesService {
     statusTypes: StatusTypeModel[] = [];
     userLoggedIn: UserModel;
     customers: CustomerModel[]= [];
+    customerContacts: CustomerContactModel[]= [];
+
 
     constructor(private http: HttpClient) {
         this.loadTruckTypes().subscribe(res => {
@@ -31,10 +34,11 @@ export class SystemValuesService {
         this.loadCustomers().subscribe(res => {
 
             for (var i = 0; i < res['recordset'].length; i++) {
-                this.customers.push(new CustomerModel(res['recordset'][i]['id'], res['recordset'][i]['name'],res['recordset'][i]['email'],res['recordset'][i]['phone']))
+                this.customers.push(new CustomerModel(res['recordset'][i]['id'], res['recordset'][i]['name'],res['recordset'][i]['agreed_solution_time'],res['recordset'][i]['crm_id']))
             }
         });
         
+       
 
     }
 
@@ -56,11 +60,21 @@ export class SystemValuesService {
         return this.http.get(environment.apiUrl + 'GetAllTruckTypes')
     }
 
+    getCustomerByName(name) {
+        const params = new HttpParams().set('name', name);
+        return this.http.get(environment.apiUrl + 'GetCustomerByName', { params })
+    }
+
     loadStatusTypes() {
         return this.http.get(environment.apiUrl + 'GetStatusTypes')
     }
     loadCustomers() {
         return this.http.get(environment.apiUrl + 'GetAllCustomers')
+    }
+
+    loadCustomerContacts(customerid) {
+        const params = new HttpParams().set('customer_id', customerid);
+        return this.http.get(environment.apiUrl + 'GetCustomerContactByCustomerID', { params }) 
     }
 
     getTruckTypes() {

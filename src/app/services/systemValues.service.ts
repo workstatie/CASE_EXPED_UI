@@ -71,7 +71,7 @@ export class SystemValuesService {
         return this.statusTypes;
     }
 
-    getCustomers() {
+    getAllCustomers() {
         return this.customers;
     }
 

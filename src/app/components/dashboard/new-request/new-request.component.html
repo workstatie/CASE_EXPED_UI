@@ -1,7 +1,24 @@
-<div [formGroup]="enterNewRequestForm" >
+
 
     <h2>Add a new Request</h2>
 
+    <div fxLayout="row" fxLayout.xs="column" >
+        <form class="example-form">
+            <mat-form-field>
+                <mat-label>Customer Name</mat-label>
+                <input type="text" matInput [formControl]="customerSearch" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option.name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <button style="margin-left:20px;" mat-mini-fab color="primary" (click)="createNewClient()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </form>
+    </div>
+    <div [formGroup]="enterNewRequestForm">
     <h4>Location details</h4>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field fxFlex="25%" class="example-full-width">
@@ -17,7 +34,8 @@
             <input matInput formControlName="postcodeFrom">
         </mat-form-field>
         <mat-form-field fxFlex="25%" class="example-full-width">
-            <input formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" [min]="dateNow" placeholder="Loading Time">
+            <input formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" [min]="dateNow"
+                placeholder="Loading Time">
             <mat-datepicker-toggle matSuffix [for]="loadPicker"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #loadPicker></ngx-mat-datetime-picker>
         </mat-form-field>
@@ -36,8 +54,9 @@
             <mat-label>Postcode to</mat-label>
             <input matInput formControlName="postcodeTo">
         </mat-form-field>
-        <mat-form-field   fxFlex="25%" class="example-full-width">
-            <input matInput  formControlName="unloadTime" [ngxMatDatetimePicker]="unloadPicker" [min]="dateNow" placeholder="Unloading Time">
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <input matInput formControlName="unloadTime" [ngxMatDatetimePicker]="unloadPicker" [min]="dateNow"
+                placeholder="Unloading Time">
             <mat-datepicker-toggle matSuffix [for]="unloadPicker"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #unloadPicker></ngx-mat-datetime-picker>
         </mat-form-field>
@@ -80,7 +99,7 @@
         <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Submit Form</button>
     </div>
     <div fxLayout="row" fxLayoutGap="20px">
-       
-    
+
+
     </div>
 </div>

@@ -7,6 +7,12 @@ import { RequestService } from 'src/app/services/requests.service';
 import { RequestsModel } from 'src/app/models/requests.model';
 import { DatePipe } from '@angular/common';
 import { StatusTypeModel } from 'src/app/models/statusType.model';
+import { CustomerModel } from 'src/app/models/customer.model';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import { AddCustomerDialogComponent } from './pop-ups/dialogAddCustomer';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'new-request',
@@ -19,13 +25,19 @@ export class NewRequestComponent implements OnInit {
   truckTypes: TruckTypeModel[];
   assignToCurrentUser: Boolean = true;
   dateNow = new Date();
+  customers: CustomerModel[];
+  customerSearch = new FormControl();
+  filteredOptions: Observable<CustomerModel[]>;
+   
+
 
   
   constructor(
     private systemService: SystemValuesService,
     private snackBar: MatSnackBar,
     private requestService: RequestService,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    public dialog: MatDialog
     ) { }
 
   //@Output() newTicketCreated: EventEmitter<any> = new EventEmitter<any>();
@@ -34,6 +46,7 @@ export class NewRequestComponent implements OnInit {
   @ViewChild('picker') picker: any;
 
   ngOnInit(): void {
+    this.customers = this.systemService.getAllCustomers();
 
     this.truckTypes = this.systemService.getTruckTypes();
 
@@ -51,9 +64,26 @@ export class NewRequestComponent implements OnInit {
       truckType: new FormControl(null, Validators.required),
       special_request: new FormControl(null, Validators.required),
     });
+
+    this.filteredOptions = this.customerSearch.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : this.customers.slice())
+      );
+
   }
 
 
+  displayFn(customer: CustomerModel): string {
+    return customer && customer.name ? customer.name : '';
+  }
+
+  private _filter(name: string): CustomerModel[] {
+    const filterValue = name.toLowerCase();
+
+    return this.customers.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
 
   onSubmit() {
     const validationTime = new Date();
@@ -62,11 +92,11 @@ export class NewRequestComponent implements OnInit {
 
     if (this.enterNewRequestForm.valid) {
    
-      var solutionDate= new Date;
+    var solutionDate= new Date;
     solutionDate.setHours(solutionDate.getHours() +2);
 
     const postNewRequest = new RequestsModel(
-      '1',
+      this.customerSearch.value.id,
       this.enterNewRequestForm.controls['locationFrom'].value,
       this.enterNewRequestForm.controls['countryFrom'].value,
       this.enterNewRequestForm.controls['postcodeFrom'].value,
@@ -101,6 +131,19 @@ export class NewRequestComponent implements OnInit {
       })
     }
   }
+
+  createNewClient(): void {
+    const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
+      width: '500px',
+      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  
 
 
   formatDate(date): string {

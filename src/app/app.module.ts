@@ -50,7 +50,11 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { UnassignedReqComponent } from './components/dashboard/unassigned-req/unassigned-req.component';
 import { OktaAuthModule, OKTA_CONFIG } from '@okta/okta-angular';
 import { DialogComponent } from './components/dashboard/main/popUps/dialog';
-import {environment} from '../environments/environment'
+import {environment} from '../environments/environment';
+
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
+
 const oktaConfig = {
   issuer: 'https://dev-444034.okta.com/oauth2/default',
   clientId: environment.oktaClient,
@@ -109,7 +113,8 @@ const oktaConfig = {
     MatNativeDateModule,
     CountdownModule,
     NgxChartsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatAutocompleteModule
   ],
   providers: [
     RequestService,

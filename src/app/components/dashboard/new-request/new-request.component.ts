@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SystemValuesService } from 'src/app/services/systemValues.service';
 import { TruckTypeModel } from 'src/app/models/truckType.model';
@@ -12,6 +12,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { AddCustomerDialogComponent } from './pop-ups/dialogAddCustomer';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { CustomerContactModel } from 'src/app/models/customercontact.model';
 
 
 @Component({
@@ -19,15 +20,19 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
   templateUrl: './new-request.component.html',
   styleUrls: ['./new-request.component.scss']
 })
-export class NewRequestComponent implements OnInit {
+export class NewRequestComponent implements OnInit, OnChanges {
 
   enterNewRequestForm: FormGroup;
   truckTypes: TruckTypeModel[];
   assignToCurrentUser: Boolean = true;
   dateNow = new Date();
   customers: CustomerModel[];
+  customerContacts: CustomerContactModel[] = [];
   customerSearch = new FormControl();
+  customerContactSearch = new FormControl();
   filteredOptions: Observable<CustomerModel[]>;
+  filteredContactOptions: Observable<CustomerContactModel[]>;
+  opencustomercontactfield: Boolean = false;
    
 
 
@@ -47,6 +52,13 @@ export class NewRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.customers = this.systemService.getAllCustomers();
+       
+    this.systemService.loadCustomerContacts("1053").subscribe(res=>{
+  
+      this.customerContactSearch = res["recordsets"]
+ 
+    });
+
 
     this.truckTypes = this.systemService.getTruckTypes();
 
@@ -65,15 +77,28 @@ export class NewRequestComponent implements OnInit {
       special_request: new FormControl(null, Validators.required),
     });
 
-    this.filteredOptions = this.customerSearch.valueChanges
-      .pipe(
+    this.filteredOptions = this.customerSearch.valueChanges.pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : value.name),
         map(name => name ? this._filter(name) : this.customers.slice())
       );
 
+     
+    this.filteredContactOptions = this.customerContactSearch.valueChanges.pipe(
+      startWith(''),
+      map(value => typeof value === 'string' ? value : value.name),
+      map(name => name ? this._filterCustomerContact(name) : this.customerContacts.slice())
+    )
+      
   }
 
+  ngOnChanges(){
+
+  }
+
+  displayContactFn(customer: CustomerContactModel): string {
+    return customer && customer.name ? customer.name : '';
+  }
 
   displayFn(customer: CustomerModel): string {
     return customer && customer.name ? customer.name : '';
@@ -81,8 +106,19 @@ export class NewRequestComponent implements OnInit {
 
   private _filter(name: string): CustomerModel[] {
     const filterValue = name.toLowerCase();
+  
+    return this.customers.filter(option =>
+       option.name.toLowerCase().indexOf(filterValue) === 0 );
+  }
 
-    return this.customers.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  private _filterCustomerContact(name: string): CustomerContactModel[] {
+  
+    const filterValue = name.toLowerCase();
+   
+    return this.customerContacts.filter(res =>{
+
+      res.name.toLowerCase().indexOf(filterValue) === 0
+    } );
   }
 
   onSubmit() {
@@ -133,14 +169,48 @@ export class NewRequestComponent implements OnInit {
   }
 
   createNewClient(): void {
-    const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
-      width: '500px',
-      
-    });
+   
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+     this.systemService.getCustomerByName(this.customerSearch.value.name).subscribe(res=>{
+      
+      
+
+        if (res["recordsets"].length >0) 
+        {
+        
+          
+          this.systemService.loadCustomerContacts(this.customerSearch.value.id).subscribe(res=>{
+  
+            this.customerContacts = res["recordsets"]
+            this.opencustomercontactfield = true;
+           
+          
+          })
+        }
+        else
+        {
+          const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
+            width: '500px',
+            
+          });  
+          
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+          });
+
+        }
+
+
+
+
+      
+    })
+
+
+
+
+ 
+
   }
 
   

@@ -50,6 +50,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { UnassignedReqComponent } from './components/dashboard/unassigned-req/unassigned-req.component';
 import { OktaAuthModule, OKTA_CONFIG } from '@okta/okta-angular';
 import { DialogComponent } from './components/dashboard/main/popUps/dialog';
+import { AddCustomerDialogComponent } from './components/dashboard/new-request/pop-ups/dialogAddCustomer';
 import {environment} from '../environments/environment';
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -73,7 +74,8 @@ const oktaConfig = {
     SolutionBottomSheet,
     SolutionByReqComponent,
     ChartsComponent,
-    UnassignedReqComponent
+    UnassignedReqComponent,
+    AddCustomerDialogComponent
   ],
   imports: [
     OktaAuthModule,

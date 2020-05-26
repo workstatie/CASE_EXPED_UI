@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
     selector: 'dialog-add-customer',
     templateUrl: './dialogAddCustomer.html',
+    styleUrls: ['./dialogAddCustomer.scss']
   })
   export class AddCustomerDialogComponent implements OnInit{
     customerForm: FormGroup;
@@ -19,9 +20,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   
     ngOnInit(){
      this.customerForm = new FormGroup({
-        name: new FormControl(null, Validators.required),
-        email: new FormControl(null, Validators.required),
-        phone: new FormControl(null, Validators.required),
+        customername: new FormControl(null, Validators.required),
+        solutiontime: new FormControl(null, Validators.required),
         
      });
 
@@ -29,6 +29,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
     
     onNoClick(): void {
       this.dialogRef.close();
+    }
+
+    onSubmit() {
+
+
     }
   
   }

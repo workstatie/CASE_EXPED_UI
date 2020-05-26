@@ -1,0 +1,112 @@
+
+<div [formGroup]="enterNewRequestForm">
+    <h2>Add a new Request</h2>
+    
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        
+            <mat-form-field>
+                <mat-label>Customer Name</mat-label>
+                <input type="text" matInput formControlName="customerSearch" [matAutocomplete]="auto" (keyup.enter)="createNewClient()" >
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="createNewClient()" >
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option.name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        
+            <mat-form-field *ngIf="opencustomercontactfield">
+                <mat-label>Customer Contact</mat-label>
+                <input type="text" matInput formControlName="customerContactSearch" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayContactFn">
+                    <mat-option *ngFor="let option2 of filteredContactOptions | async" [value]="option2">
+                        {{option2.name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+    </div>
+    
+    <h4>Location details</h4>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Location from</mat-label>
+            <input matInput formControlName="locationFrom">
+        </mat-form-field>
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Country from</mat-label>
+            <input matInput formControlName="countryFrom">
+        </mat-form-field>
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Postcode from</mat-label>
+            <input matInput formControlName="postcodeFrom">
+        </mat-form-field>
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <input formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" [min]="dateNow"
+                placeholder="Loading Time">
+            <mat-datepicker-toggle matSuffix [for]="loadPicker"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #loadPicker></ngx-mat-datetime-picker>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Location to</mat-label>
+            <input matInput formControlName="locationTo">
+        </mat-form-field>
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Country to</mat-label>
+            <input matInput formControlName="countryTo">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Postcode to</mat-label>
+            <input matInput formControlName="postcodeTo">
+        </mat-form-field>
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <input matInput formControlName="unloadTime" [ngxMatDatetimePicker]="unloadPicker" [min]="dateNow"
+                placeholder="Unloading Time">
+            <mat-datepicker-toggle matSuffix [for]="unloadPicker"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #unloadPicker></ngx-mat-datetime-picker>
+        </mat-form-field>
+    </div>
+
+    <mat-divider></mat-divider>
+    <h4>Cargo details</h4>
+    <div style="margin-top:30px;" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Weight</mat-label>
+            <input matInput formControlName="goods_weight">
+        </mat-form-field>
+        <div fxFlex="25%" class="example-full-width">
+            <span style="margin-top:12px;" fxFlex="30%">EuroPallets</span>
+            <mat-slider formControlName="goods_europallets" fxFlex min="0" max="10" step="1" thumbLabel="true">
+            </mat-slider>
+        </div>
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>Truck Type</mat-label>
+            <mat-select formControlName="truckType" required>
+                <mat-option *ngFor="let truckType of truckTypes" [value]="truckType.name">
+                    {{truckType.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="50%" class="example-full-width">
+            <mat-label>Leave a comment</mat-label>
+            <textarea matInput placeholder="Enter any special request for this cargo"
+                formControlName="special_request"></textarea>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <!-- <mat-slide-toggle fxFlex="10%" class="example-margin" [checked]="assignToCurrentUser">Assign to me
+        </mat-slide-toggle> -->
+
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Submit Form</button>
+    </div>
+    <div fxLayout="row" fxLayoutGap="20px">
+
+
+    </div>
+</div>

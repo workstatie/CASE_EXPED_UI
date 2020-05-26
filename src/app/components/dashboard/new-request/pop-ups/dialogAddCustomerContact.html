@@ -1,0 +1,20 @@
+<div [formGroup]="customerContactForm">
+
+    <h4 mat-dialog-title>Add new customer contact</h4>
+    
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+    <mat-form-field fxFlex="75%" class="example-full-width">
+        <mat-label>Customer name</mat-label>
+        <input matInput formControlName="customername">
+    </mat-form-field>
+    </div>
+    
+    
+    <div>Solution time</div>
+    <p></p>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+    <mat-slider thumbLabel [displayWith]="formatLabel" min="15" max="480" step="15" value="15" formControlName="solutiontime"></mat-slider>
+    </div>
+    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Add customer</button>
+    
+    </div>

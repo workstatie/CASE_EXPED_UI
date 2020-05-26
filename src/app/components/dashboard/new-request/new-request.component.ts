@@ -11,6 +11,7 @@ import { CustomerModel } from 'src/app/models/customer.model';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { AddCustomerDialogComponent } from './pop-ups/dialogAddCustomer';
+import { AddCustomerContactDialogComponent } from './pop-ups/dialogAddCustomerContact';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { CustomerContactModel } from 'src/app/models/customercontact.model';
 
@@ -211,25 +212,72 @@ export class NewRequestComponent implements OnInit, OnChanges {
         {
           const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
             width: '500px',
-            
+            data: {
+              custname: customername
+            }
           });  
           
           dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
+            this.opencustomercontactfield = true;
           });
 
         }
-
-
-
-
-      
+    
     })
 
+  }
 
+  createNewClientContact(): void {
+    
+  
 
+    var customername;
+    
 
- 
+    if (this.enterNewRequestForm.controls["customerContactSearch"].value.name == null)
+    {
+      customername = this.enterNewRequestForm.controls["customerContactSearch"].value
+
+      
+    }
+    else
+    {
+      customername = this.enterNewRequestForm.controls["customerContactSearch"].value.name
+    }
+
+   
+     this.systemService.getCustomerByName(customername).subscribe(res=>{
+      
+      //console.log(res);
+
+        if (res["recordset"].length >0) 
+        {
+          
+          
+          this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id).subscribe(res=>{
+  
+            // this.customerContacts = res["recordsets"]
+            this.opencustomercontactfield = true;
+           
+          
+          })
+        }
+        else
+        {
+          const dialogRef = this.dialog.open(AddCustomerContactDialogComponent, {
+            width: '500px',
+            data: {
+              custname: customername
+            }
+          });  
+          
+          dialogRef.afterClosed().subscribe(result => {
+            this.opencustomercontactfield = true;
+          });
+
+        }
+    
+    })
 
   }
 

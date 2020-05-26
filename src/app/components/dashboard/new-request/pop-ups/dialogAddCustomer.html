@@ -3,19 +3,18 @@
 <h4 mat-dialog-title>Add new customer</h4>
 
 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
-<mat-form-field fxFlex="100%" class="example-full-width">
+<mat-form-field fxFlex="75%" class="example-full-width">
     <mat-label>Customer name</mat-label>
     <input matInput formControlName="customername">
 </mat-form-field>
 </div>
 
+
+<div>Solution time</div>
+<p></p>
 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
-<mat-form-field fxFlex="25%" class="example-full-width">
-    <mat-label>Solution time</mat-label>
-    <input matInput formControlName="solutiontime">
-</mat-form-field>
+<mat-slider thumbLabel [displayWith]="formatLabel" min="15" max="480" step="15" value="15" formControlName="solutiontime"></mat-slider>
 </div>
-<mat-divider></mat-divider>
-<button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Submit Form</button>
+<button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Add customer</button>
 
 </div>

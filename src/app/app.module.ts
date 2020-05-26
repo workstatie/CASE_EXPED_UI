@@ -51,6 +51,7 @@ import { UnassignedReqComponent } from './components/dashboard/unassigned-req/un
 import { OktaAuthModule, OKTA_CONFIG } from '@okta/okta-angular';
 import { DialogComponent } from './components/dashboard/main/popUps/dialog';
 import { AddCustomerDialogComponent } from './components/dashboard/new-request/pop-ups/dialogAddCustomer';
+import { AddCustomerContactDialogComponent } from './components/dashboard/new-request/pop-ups/dialogAddCustomerContact';
 import {environment} from '../environments/environment';
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -75,7 +76,8 @@ const oktaConfig = {
     SolutionByReqComponent,
     ChartsComponent,
     UnassignedReqComponent,
-    AddCustomerDialogComponent
+    AddCustomerDialogComponent,
+    AddCustomerContactDialogComponent
   ],
   imports: [
     OktaAuthModule,

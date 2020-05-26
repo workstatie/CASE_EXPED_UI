@@ -7,17 +7,17 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
 
 
 @Component({
-    selector: 'dialog-add-customer',
-    templateUrl: './dialogAddCustomer.html',
-    styleUrls: ['./dialogAddCustomer.scss']
+    selector: 'dialog-add-customer-contact',
+    templateUrl: './dialogAddCustomerContact.html',
+    styleUrls: ['./dialogAddCustomerContact.scss']
   })
-  export class AddCustomerDialogComponent implements OnInit{
+  export class AddCustomerContactDialogComponent implements OnInit{
     [x: string]: any;
     customerForm: FormGroup;
 
     constructor(
       private systemService: SystemValuesService,
-      public dialogRef: MatDialogRef<AddCustomerDialogComponent>,
+      public dialogRef: MatDialogRef<AddCustomerContactDialogComponent>,
       @Inject(MAT_DIALOG_DATA) public Customer: CustomerModel,
       @Inject(MAT_DIALOG_DATA) public data: any
      ) {}

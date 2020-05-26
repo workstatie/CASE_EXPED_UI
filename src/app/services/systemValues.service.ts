@@ -65,6 +65,12 @@ export class SystemValuesService {
         return this.http.get(environment.apiUrl + 'GetCustomerByName', { params })
     }
 
+    getCustomerContactByName(name, customerid) {
+        const params = new HttpParams().set('name', name).set('customer_id', customerid);
+        return this.http.get(environment.apiUrl + 'GetCustomerByName', { params })
+    }
+
+
     loadStatusTypes() {
         return this.http.get(environment.apiUrl + 'GetStatusTypes')
     }
@@ -76,6 +82,18 @@ export class SystemValuesService {
         const params = new HttpParams().set('customer_id', customerid);
         return this.http.get(environment.apiUrl + 'GetCustomerContactByCustomerID', { params }) 
     }
+
+
+
+
+    postNewCustomer(request: CustomerModel) {
+        return this.http.post(environment.apiUrl + 'CreateCustomer', {
+            name: request.name,
+            agreed_solution_time: request.agreed_solution_time,
+            crm_id: request.crm_id
+        });
+    }
+
 
     getTruckTypes() {
         return this.truckTypes;

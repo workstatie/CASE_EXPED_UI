@@ -28,7 +28,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
   assignToCurrentUser: Boolean = true;
   dateNow = new Date();
   customers: CustomerModel[];
-  customerContacts: CustomerContactModel[] = [];
+  customerContacts: CustomerContactModel[];
 
   filteredOptions: Observable<CustomerModel[]>;
   filteredContactOptions: Observable<CustomerContactModel[]>;
@@ -75,12 +75,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
       special_request: new FormControl(null, Validators.required),
     });
 
-    this.systemService.loadCustomerContacts("1").subscribe(res=>{
-  
-      this.customerContacts = res["recordset"]
-      console.log(this.customerContacts[0].name)
- 
-    });
+
 
     this.filteredOptions = this.enterNewRequestForm.controls["customerSearch"].valueChanges.pipe(
         startWith(''),
@@ -101,8 +96,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
   }
 
-  displayContactFn(customer: CustomerContactModel): string {
-    return customer && customer.name ? customer.name : '';
+  displayContactFn(customercontact: CustomerContactModel): string {
+    return customercontact && customercontact.name ? customercontact.name : '';
   }
 
   displayFn(customer: CustomerModel): string {
@@ -120,10 +115,10 @@ export class NewRequestComponent implements OnInit, OnChanges {
   
     const filterValue = name.toLowerCase();
    
-    return this.customerContacts.filter(res =>{
+    return this.customerContacts.filter(option =>
 
-      res.name.toLowerCase().indexOf(filterValue) === 0
-    } );
+      option.name.toLowerCase().indexOf(filterValue) === 0
+     );
   }
 
   onSubmit() {
@@ -202,11 +197,19 @@ export class NewRequestComponent implements OnInit, OnChanges {
           
           this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id).subscribe(res=>{
   
-            // this.customerContacts = res["recordsets"]
-            this.opencustomercontactfield = true;
-           
+          this.customerContacts = res["recordset"]
+          
+
+          this.filteredContactOptions = this.enterNewRequestForm.controls["customerContactSearch"].valueChanges.pipe(
+            startWith(''),
+            map(value => typeof value === 'string' ? value : value.name),
+            map(name => name ? this._filterCustomerContact(name) : this.customerContacts.slice())
+          )
+
+          this.opencustomercontactfield = true;
           
           })
+          
         }
         else
         {
@@ -218,6 +221,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
           });  
           
           dialogRef.afterClosed().subscribe(result => {
+
+            
             this.opencustomercontactfield = true;
           });
 
@@ -225,11 +230,13 @@ export class NewRequestComponent implements OnInit, OnChanges {
     
     })
 
+
+  
   }
 
   createNewClientContact(): void {
     
-  
+  /*
 
     var customername;
     
@@ -278,7 +285,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
         }
     
     })
-
+*/
   }
 
   

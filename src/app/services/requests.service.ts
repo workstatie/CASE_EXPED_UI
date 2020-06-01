@@ -27,9 +27,10 @@ export class RequestService {
     }
 
     getUnassignedRequests() {
-        this.http.get(environment.apiUrl + 'GetUnassignedRequests')
-            .pipe(map(res => res['recordset'])).subscribe((res: RequestsModel[]) => {
-                this.unassignedRequests$.next(res);
+          
+            this.http.get(environment.apiUrl + 'GetUnassignedRequests')
+              .pipe(map(res => res['recordset'])).subscribe( (res : RequestsModel[]) =>{
+               this.unassignedRequests$.next(res);
             });
     }
 

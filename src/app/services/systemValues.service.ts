@@ -99,6 +99,18 @@ export class SystemValuesService {
     }
 
 
+    
+    postNewCustomerContact(request: CustomerContactModel) {
+        return this.http.post(environment.apiUrl + 'CreateCustomerContact', {
+            customer_id: request.customerid,
+            email: request.email,
+            phone: request.phone,
+            firstname: request.firstname,
+            lastname: request.lastname,
+            name: request.name
+        });
+    }
+
     getTruckTypes() {
         return this.truckTypes;
     }

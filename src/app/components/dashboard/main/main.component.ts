@@ -41,6 +41,9 @@ export class MainComponent implements OnInit {
   async ngOnInit() {
     const user = await this.oktaAuth.getUser();
 
+    console.log(this.oktaAuth.getAccessToken());
+  
+
     this.systemValuesService.getUserFromDB(user.email).subscribe(res=>{
       this.user = res['recordset'][0];
       this.systemValuesService.setUser(this.user)

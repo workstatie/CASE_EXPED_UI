@@ -6,8 +6,8 @@
         
             <mat-form-field>
                 <mat-label>Customer Name</mat-label>
-                <input type="text" matInput formControlName="customerSearch" [matAutocomplete]="auto" (keyup.enter)="createNewClient()" >
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="createNewClient()" >
+                <input type="text" matInput formControlName="customerSearch" [matAutocomplete]="auto1" (keyup.enter)="createNewClient()" >
+                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayFn" (optionSelected)="createNewClient()" >
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                         {{option.name}}
                     </mat-option>
@@ -16,8 +16,8 @@
         
             <mat-form-field *ngIf="opencustomercontactfield">
                 <mat-label>Customer Contact</mat-label>
-                <input type="text" matInput formControlName="customerContactSearch" [matAutocomplete]="auto" (keyup.enter)="createNewClientContact()" >
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayContactFn">
+                <input type="text" matInput formControlName="customerContactSearch"  [matAutocomplete]="auto2" (keyup.enter)="createNewClientContact()" >
+                <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayContactFn" >
                     <mat-option *ngFor="let option2 of filteredContactOptions | async" [value]="option2">
                         {{option2.name}}
                     </mat-option>
@@ -29,12 +29,17 @@
     <h4>Location details</h4>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field fxFlex="25%" class="example-full-width">
-            <mat-label>Location from</mat-label>
-            <input matInput formControlName="locationFrom">
+            <mat-label>Country from</mat-label>
+            <input type="text" matInput formControlName="countryFrom" [matAutocomplete]="auto3">
+            <mat-autocomplete #auto3="matAutocomplete">
+                <mat-option *ngFor="let option3 of filteredCountryOptions | async" [value]="option3">
+                  {{option3}}
+                </mat-option>
+              </mat-autocomplete>
         </mat-form-field>
         <mat-form-field fxFlex="25%" class="example-full-width">
-            <mat-label>Country from</mat-label>
-            <input matInput formControlName="countryFrom">
+            <mat-label>City from</mat-label>
+            <input matInput formControlName="locationFrom">
         </mat-form-field>
         <mat-form-field fxFlex="25%" class="example-full-width">
             <mat-label>Postcode from</mat-label>
@@ -49,12 +54,12 @@
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field fxFlex="25%" class="example-full-width">
-            <mat-label>Location to</mat-label>
-            <input matInput formControlName="locationTo">
-        </mat-form-field>
-        <mat-form-field fxFlex="25%" class="example-full-width">
             <mat-label>Country to</mat-label>
             <input matInput formControlName="countryTo">
+        </mat-form-field>
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <mat-label>City to</mat-label>
+            <input matInput formControlName="locationTo">
         </mat-form-field>
 
         <mat-form-field fxFlex="25%" class="example-full-width">

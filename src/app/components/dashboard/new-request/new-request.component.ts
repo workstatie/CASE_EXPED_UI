@@ -14,6 +14,8 @@ import { AddCustomerDialogComponent } from './pop-ups/dialogAddCustomer';
 import { AddCustomerContactDialogComponent } from './pop-ups/dialogAddCustomerContact';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { CustomerContactModel } from 'src/app/models/customercontact.model';
+import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
+
 
 
 @Component({
@@ -23,18 +25,19 @@ import { CustomerContactModel } from 'src/app/models/customercontact.model';
 })
 export class NewRequestComponent implements OnInit, OnChanges {
 
+  CountryOptions: string[] = ['One', 'Two', 'Three'];
+
   enterNewRequestForm: FormGroup;
   truckTypes: TruckTypeModel[];
   assignToCurrentUser: Boolean = true;
   dateNow = new Date();
-  customers: CustomerModel[];
+  customers: CustomerModel[] = [];
   customerContacts: CustomerContactModel[];
-
+  filteredCountryOptions: Observable<string[]>;
   filteredOptions: Observable<CustomerModel[]>;
   filteredContactOptions: Observable<CustomerContactModel[]>;
+  newCustomerContactCreated: string;
   opencustomercontactfield: Boolean = false;
-   
-
 
   
   constructor(
@@ -51,9 +54,10 @@ export class NewRequestComponent implements OnInit, OnChanges {
   @ViewChild('picker') picker: any;
 
   ngOnInit(): void {
+
+    console.log("New request initiated")
     this.customers = this.systemService.getAllCustomers();
        
-    
 
 
     this.truckTypes = this.systemService.getTruckTypes();
@@ -74,8 +78,9 @@ export class NewRequestComponent implements OnInit, OnChanges {
       truckType: new FormControl(null, Validators.required),
       special_request: new FormControl(null, Validators.required),
     });
-
-
+    
+    
+    
 
     this.filteredOptions = this.enterNewRequestForm.controls["customerSearch"].valueChanges.pipe(
         startWith(''),
@@ -89,6 +94,13 @@ export class NewRequestComponent implements OnInit, OnChanges {
       map(value => typeof value === 'string' ? value : value.name),
       map(name => name ? this._filterCustomerContact(name) : this.customerContacts.slice())
     )
+
+
+
+    this.filteredCountryOptions = this.enterNewRequestForm.controls["countryFrom"].valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterCountries(value))
+      );
       
   }
 
@@ -97,6 +109,13 @@ export class NewRequestComponent implements OnInit, OnChanges {
   }
 
   displayContactFn(customercontact: CustomerContactModel): string {
+   console.log("contact")
+    if(this.newCustomerContactCreated){
+      console.log(this.newCustomerContactCreated)
+     
+      return this.newCustomerContactCreated;
+    }
+    
     return customercontact && customercontact.name ? customercontact.name : '';
   }
 
@@ -106,10 +125,12 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
   private _filter(name: string): CustomerModel[] {
     const filterValue = name.toLowerCase();
-  
+    
     return this.customers.filter(option =>
        option.name.toLowerCase().indexOf(filterValue) === 0 );
   }
+
+
 
   private _filterCustomerContact(name: string): CustomerContactModel[] {
   
@@ -121,7 +142,21 @@ export class NewRequestComponent implements OnInit, OnChanges {
      );
   }
 
+
+
+  private _filterCountries(value: string): string[] {
+    const filterValue = value.toLowerCase();
+  //console.log(this.CountryOptions)
+   //console.log(this.CountryOptions.filter(option => option.toLowerCase().includes(filterValue)))
+    return this.CountryOptions.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+
+
+
   onSubmit() {
+    console.log(this.enterNewRequestForm.controls['customerSearch'].value)
+    console.log(this.enterNewRequestForm.controls['customerContactSearch'].value)
     const validationTime = new Date();
     validationTime.setHours(validationTime.getHours() + 2);
 
@@ -193,13 +228,12 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
         if (res["recordset"].length >0) 
         {
-          
+        
           
           this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id).subscribe(res=>{
   
           this.customerContacts = res["recordset"]
           
-
           this.filteredContactOptions = this.enterNewRequestForm.controls["customerContactSearch"].valueChanges.pipe(
             startWith(''),
             map(value => typeof value === 'string' ? value : value.name),
@@ -236,57 +270,43 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
   createNewClientContact(): void {
     
-  /*
 
-    var customername;
-    
-
-    if (this.enterNewRequestForm.controls["customerContactSearch"].value.name == null)
-    {
-      customername = this.enterNewRequestForm.controls["customerContactSearch"].value
-
-      
-    }
-    else
-    {
-      customername = this.enterNewRequestForm.controls["customerContactSearch"].value.name
-    }
-
-   
-     this.systemService.getCustomerByName(customername).subscribe(res=>{
-      
-      //console.log(res);
-
-        if (res["recordset"].length >0) 
-        {
-          
-          
-          this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id).subscribe(res=>{
-  
-            // this.customerContacts = res["recordsets"]
-            this.opencustomercontactfield = true;
-           
-          
-          })
-        }
-        else
-        {
           const dialogRef = this.dialog.open(AddCustomerContactDialogComponent, {
             width: '500px',
             data: {
-              custname: customername
+              custid: this.enterNewRequestForm.controls["customerSearch"].value.id
             }
           });  
           
           dialogRef.afterClosed().subscribe(result => {
+            console.log(result)
+           // this.enterNewRequestForm.controls["customerContactSearch"].patchValue("result");
+           this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id).subscribe(res=>{
+  
+            this.customerContacts = res["recordset"]
+            
+  
+            this.filteredContactOptions = this.enterNewRequestForm.controls["customerContactSearch"].valueChanges.pipe(
+              startWith(''),
+              map(value => typeof value === 'string' ? value : value.name),
+              map(name => name ? this._filterCustomerContact(name) : this.customerContacts.slice())
+            )
+  
+            
+            
+            })
+            console.log(this.customerContacts)
+            // this.test= result;
+            this.newCustomerContactCreated= result;
+            this.enterNewRequestForm.patchValue({customerContactSearch : result})
             this.opencustomercontactfield = true;
+            
+
           });
 
-        }
+    }
     
-    })
-*/
-  }
+
 
   
 

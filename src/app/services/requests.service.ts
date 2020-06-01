@@ -27,8 +27,8 @@ export class RequestService {
     }
 
     getUnassignedRequests() {
-            const params = new HttpParams().set('assigned_user_id', 'NULL');
-            this.http.get(environment.apiUrl + 'GetRequests', { params })
+          
+            this.http.get(environment.apiUrl + 'GetUnassignedRequests')
               .pipe(map(res => res['recordset'])).subscribe( (res : RequestsModel[]) =>{
                this.unassignedRequests$.next(res);
             });

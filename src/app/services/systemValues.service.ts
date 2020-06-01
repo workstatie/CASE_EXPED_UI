@@ -8,6 +8,7 @@ import { UserModel } from '../models/user.model';
 import { environment } from '../../environments/environment'
 import { CustomerModel } from '../models/customer.model';
 import { CustomerContactModel } from '../models/customercontact.model';
+import { CarrierModel } from '../models/carrier.model';
 
 @Injectable()
 export class SystemValuesService {
@@ -17,25 +18,24 @@ export class SystemValuesService {
     userLoggedIn: UserModel;
     customers: CustomerModel[]= [];
     customerContacts: CustomerContactModel[]= [];
-
+    carriers :CarrierModel[]=[];
 
     constructor(private http: HttpClient) {
+
         this.loadTruckTypes().subscribe(res => {
-            for (var i = 0; i < res['recordset'].length; i++) {
-                this.truckTypes.push(new TruckTypeModel(res['recordset'][i]['id'], res['recordset'][i]['name']))
-            }
+            this.truckTypes=res['recordset']
         });
+
         this.loadStatusTypes().subscribe(res => {
-            for (var i = 0; i < res['recordset'].length; i++) {
-                this.statusTypes.push(new StatusTypeModel(res['recordset'][i]['id'], res['recordset'][i]['name']))
-            }
+            this.statusTypes=res['recordset']
         });
 
         this.loadCustomers().subscribe(res => {
+            this.customers=res['recordset']
+        });
 
-            for (var i = 0; i < res['recordset'].length; i++) {
-                this.customers.push(new CustomerModel(res['recordset'][i]['id'], res['recordset'][i]['name'],res['recordset'][i]['agreed_solution_time'],res['recordset'][i]['crm_id']))
-            }
+        this.loadCarrier().subscribe(res => {
+            this.carriers=res['recordset']
         });
         
        
@@ -83,6 +83,10 @@ export class SystemValuesService {
         return this.http.get(environment.apiUrl + 'GetCustomerContactByCustomerID', { params }) 
     }
 
+    loadCarrier(){
+        return this.http.get(environment.apiUrl + 'GetAllCarriers')
+    }
+
 
 
 
@@ -107,5 +111,8 @@ export class SystemValuesService {
         return this.customers;
     }
 
+    getAllCarriers() {
+        return this.carriers;
+    }
 
 }

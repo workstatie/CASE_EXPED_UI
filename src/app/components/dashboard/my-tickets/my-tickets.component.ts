@@ -21,7 +21,7 @@ export class MyTicketsComponent implements OnInit {
   showSpinner: Boolean = false;
   myTicketsLoaded: Boolean = false;
   statusValues: StatusTypeModel[];
-  displayedColumns: string[] = ['ID', 'Status'];
+  displayedColumns: string[] = ['Route', 'Status'];
 
   
   dataSource = new MatTableDataSource(this.myTickets);
@@ -40,6 +40,7 @@ export class MyTicketsComponent implements OnInit {
 
   async ngOnInit() {
  
+    
     this.user=  this.systemService.getUser();
   
     this.getTicketsById(this.user.ID);

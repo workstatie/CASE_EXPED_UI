@@ -9,6 +9,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { RequestService } from 'src/app/services/requests.service';
 import { StatusTypeModel } from 'src/app/models/statusType.model';
 import { SystemValuesService } from 'src/app/services/systemValues.service';
+import { CarrierModel } from 'src/app/models/carrier.model';
+import { CarrierDialogComponent } from './pop-ups/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -16,50 +19,66 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
   templateUrl: './solution-by-req.component.html',
   styleUrls: ['./solution-by-req.component.scss']
 })
-export class SolutionByReqComponent implements OnChanges {
+export class SolutionByReqComponent implements OnChanges, OnInit {
 
   @Input() request: RequestsModel;
   @ViewChild(CountdownComponent) counter: CountdownComponent;
 
   solutions: SolutionModel[] = [];
-  displayedColumns: string[] = ['select', 'Price','Delay', 'Transit Time', 'Details'];
+  displayedColumns: string[] = ['select','Carrier', 'Price','Delay', 'Transit Time', 'Details'];
   dataSource = new MatTableDataSource(this.solutions);
   selection = new SelectionModel<SolutionModel>(true, []);
   statusValues : StatusTypeModel[];
+  solutionTime: any;
+  counterConfig : any;
+  carriers: CarrierModel[];
+  
 
-  counterConfig = {
-    leftTime: 9000,
-    size: 'large',
-    demand: true
-  };
 
   constructor(
     private solutionService: SolutionService,
     private requestService: RequestService,
     private systemService: SystemValuesService,
-
+    private dialog: MatDialog
     ) { }
 
+    ngOnInit(){
+      this.carriers=this.systemService.getAllCarriers();
+
+    }
 
   ngOnChanges(): void {
-    // console.log(new Date(this.request.datetime_created).setHours(new Date(this.request.datetime_created).getHours() +2))
-
-    
-    
-    //  const creationDate = new Date(this.request.datetime_created).getHours()*60 + new Date(this.request.datetime_created).getMinutes()
-    //  console.log(creationDate)
 
 
     this.statusValues = this.systemService.getStatusTypes();
     this.selection = new SelectionModel<SolutionModel>(false, []);
     this.solutionService.getSolutionForRequestId(this.request.id).subscribe(res => {
-      this.solutions = res['recordsets'][0];
+      this.solutions = res['recordset'];
+      for (let solution of this.solutions){
+        let idx =this.carriers.findIndex( carrier => carrier.id = solution.carrier_id)
+        solution.carrier_id = this.carriers[idx].name;
+     }
       this.dataSource = new MatTableDataSource(this.solutions);
-
-      this.counter.begin();
       this.request.load_datetime = new Date(this.request.load_datetime).toLocaleString();
       this.request.unload_datetime = new Date(this.request.unload_datetime).toLocaleString();
-    })
+
+
+      this.solutionTime = new Date(this.request.datetime_created);
+      this.solutionTime.setHours(this.solutionTime.getHours()+ new Date(this.request.solution_time).getHours())
+      
+
+      var remainingTime = (this.solutionTime.getTime() -  new Date().getTime() );
+      var diffMins = Math.round(((remainingTime % 86400000) % 3600000) / 1000);
+      this.counterConfig = {
+        leftTime: diffMins,
+        size: 'large',
+        demand: false
+      };
+
+      this.counter.begin();
+
+    })  
+    
 
   }
 
@@ -82,8 +101,17 @@ export class SolutionByReqComponent implements OnChanges {
    
   }
 
+  viewCarrier(id){
+    console.log(id)
+    const dialogRef = this.dialog.open(CarrierDialogComponent, {
+      width: '500px',
+      data: {
+        inputData: this.carriers[id-1]
+      }
+    });  
+  
+    dialogRef.afterClosed().subscribe(result => {
+    });
 
-
-
-
+  }
 }

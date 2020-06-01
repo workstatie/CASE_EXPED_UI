@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment'
-import { map } from "rxjs/operators"; 
+import { map } from "rxjs/operators";
 
 
 @Injectable()
@@ -20,27 +20,18 @@ export class RequestService {
     getMyRequests(userId) {
         const params = new HttpParams().set('assigned_user_id', userId);
         this.http.get(environment.apiUrl + 'GetRequests', { params })
-          .pipe(map(res => res['recordset'])).subscribe( (res : RequestsModel[]) =>{
-           // data = res['recordset'];
-           this.myRequests$.next(res);
-        });
-    }
-
-    getUnassignedRequests() {
-            const params = new HttpParams().set('assigned_user_id', 'NULL');
-            this.http.get(environment.apiUrl + 'GetRequests', { params })
-              .pipe(map(res => res['recordset'])).subscribe( (res : RequestsModel[]) =>{
-               this.unassignedRequests$.next(res);
+            .pipe(map(res => res['recordset'])).subscribe((res: RequestsModel[]) => {
+                // data = res['recordset'];
+                this.myRequests$.next(res);
             });
     }
 
-
-
-
-    // getMyRequests(userId) {  
-    //     const params = new HttpParams().set('assigned_user_id', userId);
-    //     return this.http.get(environment.apiUrl + 'GetRequests', { params })
-    // }
+    getUnassignedRequests() {
+        this.http.get(environment.apiUrl + 'GetUnassignedRequests')
+            .pipe(map(res => res['recordset'])).subscribe((res: RequestsModel[]) => {
+                this.unassignedRequests$.next(res);
+            });
+    }
 
 
     getRequestByID(id) {
@@ -81,7 +72,7 @@ export class RequestService {
             from_address_postcode: request.from_address_postcode,
             from_address_country: request.from_address_country,
             to_address_city: request.to_address_city,
-            to_address_country : request.to_address_country,
+            to_address_country: request.to_address_country,
             to_address_postcode: request.to_address_postcode,
             load_datetime: request.load_datetime,
             unload_datetime: request.unload_datetime,
@@ -99,7 +90,7 @@ export class RequestService {
     }
 
     updateStatusReqById(id, status) {
-        
+
 
         const params = new HttpParams().set('id', id);
 
@@ -108,7 +99,7 @@ export class RequestService {
         }, { params });
     }
 
-   
+
 
 
 }

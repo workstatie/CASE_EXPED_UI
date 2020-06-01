@@ -1,0 +1,23 @@
+<h4 mat-dialog-title>{{carrier.name}} </h4>
+
+<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px" style="margin-bottom: 30px;">
+    <mat-form-field fxFlex="40%" class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="carrier.email">
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40%" class="example-full-width">
+        <mat-label>Phone</mat-label>
+        <input matInput [(ngModel)]="carrier.phone">
+    </mat-form-field>
+
+</div>
+
+<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="40px">
+    <span fxFlex="30%">Orders Fulffiled: {{carrier.orders_fulfilled}}</span>
+    <div fxFlex="60%">
+        <span>Carrier Rating </span>
+        <bar-rating [readOnly]="true" [(rate)]="carrier.rating" [max]="5"></bar-rating>
+    </div> 
+
+</div>

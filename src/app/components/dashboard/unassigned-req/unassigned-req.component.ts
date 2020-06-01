@@ -21,7 +21,7 @@ export class UnassignedReqComponent implements OnInit {
   myTicketsLoaded: Boolean = false;
   statusValues: StatusTypeModel[];
 
-  displayedColumns: string[] = ['ID', 'Status'];
+  displayedColumns: string[] = ['Client',  'CreationDate'];
   dataSource = new MatTableDataSource(this.myTickets);
   interval : any;
   customers : CustomerModel[];
@@ -35,16 +35,20 @@ export class UnassignedReqComponent implements OnInit {
     private systemService: SystemValuesService) { }
 
   ngOnInit() {
-   
+    this.requestService.getUnassignedRequests();
 
   }
 
   ngAfterViewInit(): void {
     this.getUnassignedTickets();
-    this.customers  = this.systemService.getAllCustomers();
+    
+   
     this.requestService.unassignedRequests$.subscribe( data => {
        this.myTickets = data;
-    })
+    });
+  
+
+
     this.interval = setInterval( () =>{
       this.getUnassignedTickets();
     }, environment.refreshRate);
@@ -59,12 +63,11 @@ export class UnassignedReqComponent implements OnInit {
 
   
   getUnassignedTickets() {
-
     this.myTicketsLoaded = true;
-    this.requestService.getUnassignedRequests();
     this.dataSource = new MatTableDataSource(this.myTickets);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
   }
 
   // getTickets() {

@@ -55,6 +55,8 @@ import { AddCustomerContactDialogComponent } from './components/dashboard/new-re
 import {environment} from '../environments/environment';
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { CarrierDialogComponent } from './components/dashboard/solution-by-req/pop-ups/dialog';
+import { BarRatingModule } from "ngx-bar-rating";
 
 
 const oktaConfig = {
@@ -77,7 +79,8 @@ const oktaConfig = {
     ChartsComponent,
     UnassignedReqComponent,
     AddCustomerDialogComponent,
-    AddCustomerContactDialogComponent
+    AddCustomerContactDialogComponent,
+    CarrierDialogComponent
   ],
   imports: [
     OktaAuthModule,
@@ -118,7 +121,8 @@ const oktaConfig = {
     CountdownModule,
     NgxChartsModule,
     MatDialogModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    BarRatingModule
   ],
   providers: [
     RequestService,

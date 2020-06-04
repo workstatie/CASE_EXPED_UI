@@ -64,7 +64,7 @@ export class SolutionByReqComponent implements OnChanges, OnInit {
 
 
       this.solutionTime = new Date(this.request.datetime_created);
-      this.solutionTime.setHours(this.solutionTime.getHours()+ new Date(this.request.solution_time).getHours())
+      this.solutionTime.setHours(this.solutionTime.getHours()+ new Date(this.request.solution_deadline).getHours())
       
 
       var remainingTime = (this.solutionTime.getTime() -  new Date().getTime() );

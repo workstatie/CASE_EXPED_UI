@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
     // });
 
     // if (await this.authService.checkAuthenticated()) {
-    //   await this.router.navigate([this.returnUrl]);
     // }
   }
 

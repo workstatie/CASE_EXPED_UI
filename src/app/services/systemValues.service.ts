@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment'
 import { CustomerModel } from '../models/customer.model';
 import { CustomerContactModel } from '../models/customercontact.model';
 import { CarrierModel } from '../models/carrier.model';
+import { CountryModel } from '../models/country.model';
 
 @Injectable()
 export class SystemValuesService {
@@ -19,6 +20,7 @@ export class SystemValuesService {
     customers: CustomerModel[]= [];
     customerContacts: CustomerContactModel[]= [];
     carriers :CarrierModel[]=[];
+    countries: CountryModel[]=[];
 
     constructor(private http: HttpClient) {
 
@@ -31,11 +33,16 @@ export class SystemValuesService {
         });
 
         this.loadCustomers().subscribe(res => {
+           
             this.customers=res['recordset']
         });
 
         this.loadCarrier().subscribe(res => {
             this.carriers=res['recordset']
+        });
+
+        this.loadCountries().subscribe(res => {
+            this.countries=res['recordset']
         });
         
        
@@ -74,8 +81,13 @@ export class SystemValuesService {
     loadStatusTypes() {
         return this.http.get(environment.apiUrl + 'GetStatusTypes')
     }
+
     loadCustomers() {
         return this.http.get(environment.apiUrl + 'GetAllCustomers')
+    }
+
+    loadCountries() {
+        return this.http.get(environment.apiUrl + 'GetAllCountries')
     }
 
     loadCustomerContacts(customerid) {
@@ -125,6 +137,10 @@ export class SystemValuesService {
 
     getAllCarriers() {
         return this.carriers;
+    }
+
+    getAllCountries() {
+        return this.countries;
     }
 
 }

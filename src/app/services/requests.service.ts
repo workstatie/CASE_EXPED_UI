@@ -18,8 +18,8 @@ export class RequestService {
     }
 
     getMyRequests(userId) {
-        const params = new HttpParams().set('assigned_user_id', userId);
-        this.http.get(environment.apiUrl + 'GetRequests', { params })
+        const params = new HttpParams().set('user_id', userId);
+        this.http.get(environment.apiUrl + 'GetRequestByCountry', { params })
             .pipe(map(res => res['recordset'])).subscribe((res: RequestsModel[]) => {
                 // data = res['recordset'];
                 this.myRequests$.next(res);
@@ -40,10 +40,16 @@ export class RequestService {
         return this.http.get(environment.apiUrl + 'GetRequestDetails', { params })
     }
 
+    getRequestByCountry(user_id) {
+        const params = new HttpParams().set('user_id', user_id);
+        return this.http.get(environment.apiUrl + 'GetRequestByCountry', { params })
+    }
+
 
     postNewRequest(request: RequestsModel) {
         return this.http.post(environment.apiUrl + 'NewRequest', {
             customer_id: request.customer_id,
+            customer_contact_id: request.customer_contact_id,
             from_address_city: request.from_address_city,
             from_address_country: request.from_address_country,
             from_address_postcode: request.from_address_postcode,
@@ -52,16 +58,22 @@ export class RequestService {
             to_address_postcode: request.to_address_postcode,
             load_datetime: request.load_datetime,
             unload_datetime: request.unload_datetime,
-            solution_time: request.solution_time,
+            load_end_datetime: request.load_end_datetime,
+            unload_end_datetime: request.unload_end_datetime,
+            solution_deadline: request.solution_deadline,
             validation_datetime: request.validation_datetime,
             goods_weight: request.goods_weight,
-            goods_europallets: request.goods_europallets,
             truck_type_id: request.truck_type_id,
-            adr_type_id: request.adr_type_id,
             special_requirments: request.special_requirments,
             email_html: request.email_html,
             assigned_user_id: request.assigned_user_id,
-            request_status_type_id: request.request_status_type_id
+            request_status_type_id: request.request_status_type_id,
+            request_source_id: request.request_source_id,
+            adr_flag: request.adr_flag,
+            twodrivers_flag: request.twodrivers_flag,
+            jumbo_flag: request.jumbo_flag,
+            frigo_flag: request.frigo_flag,
+            intermodal_flag: request.intermodal_flag
         });
     }
 
@@ -77,12 +89,10 @@ export class RequestService {
             to_address_postcode: request.to_address_postcode,
             load_datetime: request.load_datetime,
             unload_datetime: request.unload_datetime,
-            solution_time: request.solution_time,
+            solution_sent_datetime: request.solution_sent_datetime,
             validation_datetime: request.validation_datetime,
             goods_weight: request.goods_weight,
-            goods_europallets: request.goods_europallets,
             truck_type_id: request.truck_type_id,
-            adr_type_id: request.adr_type_id,
             special_requirments: request.special_requirments,
             email_html: request.email_html,
             assigned_user_id: request.assigned_user_id,

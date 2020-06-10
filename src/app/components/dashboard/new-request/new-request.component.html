@@ -51,13 +51,13 @@
             <input matInput formControlName="postcodeFrom">
         </mat-form-field>
         <mat-form-field fxFlex="15%" class="example-full-width">
-            <input formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" [min]="dateNow"
+            <input formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" 
                 placeholder="Loading Time Start">
             <mat-datepicker-toggle matSuffix [for]="loadPicker"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #loadPicker></ngx-mat-datetime-picker>
+            <ngx-mat-datetime-picker  #loadPicker></ngx-mat-datetime-picker>
         </mat-form-field>
         <mat-form-field fxFlex="15%" class="example-full-width">
-            <input formControlName="loadTimeEnd" matInput [ngxMatDatetimePicker]="loadPicker2" [min]="dateNow"
+            <input formControlName="loadTimeEnd" matInput [ngxMatDatetimePicker]="loadPicker2" 
                 placeholder="Loading Time End" >
             <mat-datepicker-toggle matSuffix [for]="loadPicker2" ></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #loadPicker2 ></ngx-mat-datetime-picker>
@@ -84,13 +84,13 @@
             <input matInput formControlName="postcodeTo">
         </mat-form-field>
         <mat-form-field fxFlex="15%" class="example-full-width">
-            <input matInput formControlName="unloadTime" [ngxMatDatetimePicker]="unloadPicker" [min]="dateNow"
+            <input matInput formControlName="unloadTime" [ngxMatDatetimePicker]="unloadPicker"
                 placeholder="Unloading Time Start">
             <mat-datepicker-toggle matSuffix [for]="unloadPicker"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #unloadPicker></ngx-mat-datetime-picker>
         </mat-form-field>
         <mat-form-field fxFlex="15%" class="example-full-width">
-            <input matInput formControlName="unloadTimeEnd" [ngxMatDatetimePicker]="unloadPicker2" [min]="dateNow"
+            <input matInput formControlName="unloadTimeEnd" [ngxMatDatetimePicker]="unloadPicker2"
                 placeholder="Unloading Time End">
             <mat-datepicker-toggle matSuffix [for]="unloadPicker2"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #unloadPicker2></ngx-mat-datetime-picker>

@@ -58,17 +58,27 @@ export class SolutionByReqComponent implements OnChanges, OnInit {
         let idx =this.carriers.findIndex( carrier => carrier.id = solution.carrier_id)
         solution.carrier_id = this.carriers[idx].name;
      }
+     
       this.dataSource = new MatTableDataSource(this.solutions);
       this.request.load_datetime = new Date(this.request.load_datetime).toLocaleString();
       this.request.unload_datetime = new Date(this.request.unload_datetime).toLocaleString();
 
-
       this.solutionTime = new Date(this.request.datetime_created);
-      this.solutionTime.setHours(this.solutionTime.getHours()+ new Date(this.request.solution_deadline).getHours())
       
+      //DE MODIFICAT
 
+
+      this.solutionTime.setHours((this.solutionTime.getHours()-3)+ this.request.solution_deadline )
+
+      
+      console.log(this.solutionTime)
       var remainingTime = (this.solutionTime.getTime() -  new Date().getTime() );
-      var diffMins = Math.round(((remainingTime % 86400000) % 3600000) / 1000);
+
+
+      var diffMins =Math.round((remainingTime ) / 1000);
+     // diffMins /=60;
+
+      console.log(diffMins)
       this.counterConfig = {
         leftTime: diffMins,
         size: 'large',
@@ -85,10 +95,10 @@ export class SolutionByReqComponent implements OnChanges, OnInit {
   ngAfterViewInit(): void {
   }
 
-  getRemainingTime(futureDate) {
+  // getRemainingTime(futureDate) {
     
-    return new Date("2020-02-20T12:01:04.753Z").getTime() - new Date().getTime();
-  }
+  //   return new Date("2020-02-20T12:01:04.753Z").getTime() - new Date().getTime();
+  // }
 
   
   submitSolution(){

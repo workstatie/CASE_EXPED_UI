@@ -16,6 +16,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CustomerContactModel } from 'src/app/models/customercontact.model';
 import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { CountryModel } from 'src/app/models/country.model';
+import * as moment from 'moment';
 
 
 
@@ -31,7 +32,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
   enterNewRequestForm: FormGroup;
   truckTypes: TruckTypeModel[];
   assignToCurrentUser: Boolean = true;
-  dateNow = new Date();
+  loadTime: any;
+  unloadTime: any;
   customers: CustomerModel[] = [];
   countries: CountryModel[] = [];
   customerContacts: CustomerContactModel[];
@@ -58,6 +60,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
 
+    this.loadTime = new Date( new Date().getFullYear(),new Date().getMonth(),new Date().getDate(),8,0,0);
+    this.unloadTime = new Date( new Date().getFullYear(),new Date().getMonth(),new Date().getDate(),16,0,0);
 
 
     this.systemService.loadCustomers().subscribe(res => {
@@ -99,6 +103,11 @@ export class NewRequestComponent implements OnInit, OnChanges {
       frigo: new FormControl(null),
       intermodal: new FormControl(null),
     });
+
+    this.enterNewRequestForm.controls['loadTime'].patchValue(this.loadTime)
+    this.enterNewRequestForm.controls['unloadTime'].patchValue(this.loadTime)
+    this.enterNewRequestForm.controls['loadTimeEnd'].patchValue(this.unloadTime)
+    this.enterNewRequestForm.controls['unloadTimeEnd'].patchValue(this.unloadTime)
 
 
 

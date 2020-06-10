@@ -27,6 +27,7 @@
     "@okta/okta-auth-js": "2.11.0",
     "@swimlane/ngx-charts": "^14.0.0",
     "@uipath/robot": "^1.1.2",
+    "moment": "^2.26.0",
     "ngx-bar-rating": "^1.1.0",
     "ngx-countdown": "^9.0.1",
     "rxjs": "~6.5.4",

@@ -16,8 +16,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CustomerContactModel } from 'src/app/models/customercontact.model';
 import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { CountryModel } from 'src/app/models/country.model';
-import * as moment from 'moment';
-
 
 
 @Component({

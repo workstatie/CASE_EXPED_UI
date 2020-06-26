@@ -16,6 +16,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CustomerContactModel } from 'src/app/models/customercontact.model';
 import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { CountryModel } from 'src/app/models/country.model';
+import { OktaAuthService } from '@okta/okta-angular';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
   filteredContactOptions: Observable<CustomerContactModel[]>;
   newCustomerContactCreated: string;
   opencustomercontactfield: Boolean = false;
+  token;
 
 
   constructor(
@@ -48,7 +50,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
     private snackBar: MatSnackBar,
     private requestService: RequestService,
     public datepipe: DatePipe,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public oktaAuth: OktaAuthService
   ) { }
 
   //@Output() newTicketCreated: EventEmitter<any> = new EventEmitter<any>();
@@ -56,23 +59,27 @@ export class NewRequestComponent implements OnInit, OnChanges {
   // @Input() ticket: RequestsModel;
   @ViewChild('picker') picker: any;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    this.token = await this.oktaAuth.getAccessToken();
+    
+    //console.log(token);
 
     this.loadTime = new Date( new Date().getFullYear(),new Date().getMonth(),new Date().getDate(),8,0,0);
     this.unloadTime = new Date( new Date().getFullYear(),new Date().getMonth(),new Date().getDate(),16,0,0);
 
 
-    this.systemService.loadCustomers().subscribe(res => {
+    this.systemService.loadCustomers(this.token).subscribe(res => {
 
       this.customers = res['recordset']
     });
 
-    this.systemService.loadCountries().subscribe(res => {
+    this.systemService.loadCountries(this.token).subscribe(res => {
       this.countries = res['recordset']
 
     });
 
-    this.systemService.loadTruckTypes().subscribe(res => {
+    this.systemService.loadTruckTypes(this.token).subscribe(res => {
       this.truckTypes = res['recordset']
     });
 
@@ -273,7 +280,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
         intermodal
       );
 
-      this.requestService.postNewRequest(postNewRequest).subscribe(res => console.log(res));
+
+      this.requestService.postNewRequest(postNewRequest, this.token).subscribe(res => console.log(res));
 
       this.snackBar.open('Form Submitted', 'close', {
         duration: 1500
@@ -325,13 +333,13 @@ export class NewRequestComponent implements OnInit, OnChanges {
     }
 
 
-    this.systemService.getCustomerByName(customername).subscribe(res => {
+    this.systemService.getCustomerByName(customername, this.token).subscribe(res => {
 
 
       if (res["recordset"].length > 0) {
 
 
-        this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id).subscribe(res => {
+        this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id, this.token).subscribe(res => {
 
           this.customerContacts = res["recordset"]
 
@@ -383,7 +391,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe(result => {
       // this.enterNewRequestForm.controls["customerContactSearch"].patchValue("result");
-      this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id).subscribe(res => {
+      this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id, this.token).subscribe(res => {
 
         this.customerContacts = res["recordset"]
 

@@ -11,6 +11,7 @@ import { CustomerContactModel } from '../models/customercontact.model';
 import { CarrierModel } from '../models/carrier.model';
 import { CountryModel } from '../models/country.model';
 
+
 @Injectable()
 export class SystemValuesService {
 
@@ -21,33 +22,13 @@ export class SystemValuesService {
     customerContacts: CustomerContactModel[]= [];
     carriers :CarrierModel[]=[];
     countries: CountryModel[]=[];
+    token;
 
-    constructor(private http: HttpClient) {
-
-        this.loadTruckTypes().subscribe(res => {
-            this.truckTypes=res['recordset']
-        });
-
-        this.loadStatusTypes().subscribe(res => {
-            this.statusTypes=res['recordset']
-        });
-
-        this.loadCustomers().subscribe(res => {
-           
-            this.customers=res['recordset']
-        });
-
-        this.loadCarrier().subscribe(res => {
-            this.carriers=res['recordset']
-        });
-
-        this.loadCountries().subscribe(res => {
-            this.countries=res['recordset']
-        });
-        
-       
-
-    }
+    constructor(
+        private http: HttpClient
+        ) {
+            
+        }
 
     setUser(user) {
         this.userLoggedIn = user;
@@ -57,18 +38,19 @@ export class SystemValuesService {
         return this.userLoggedIn;
     }
 
-    getUserFromDB(userEmail) {
-        const params = new HttpParams().set('email', userEmail);
+    getUserFromDB(userEmail, api_key) {
+        const params = new HttpParams().set('email', userEmail).set('api_key', api_key);
         return this.http.get(environment.apiUrl + 'GetUserByEmail', { params });
     }
 
 
-    loadTruckTypes() {
-        return this.http.get(environment.apiUrl + 'GetAllTruckTypes')
+    loadTruckTypes(api_key) {
+        const params = new HttpParams().set('api_key', api_key);
+        return this.http.get(environment.apiUrl + 'GetAllTruckTypes', { params })
     }
 
-    getCustomerByName(name) {
-        const params = new HttpParams().set('name', name);
+    getCustomerByName(name, api_key) {
+        const params = new HttpParams().set('name', name).set('api_key', api_key);
         return this.http.get(environment.apiUrl + 'GetCustomerByName', { params })
     }
 
@@ -78,41 +60,47 @@ export class SystemValuesService {
     }
 
 
-    loadStatusTypes() {
-        return this.http.get(environment.apiUrl + 'GetStatusTypes')
+    loadStatusTypes(api_key) {
+        const params = new HttpParams().set('api_key', api_key)
+        return this.http.get(environment.apiUrl + 'GetStatusTypes', { params })
     }
 
-    loadCustomers() {
-        return this.http.get(environment.apiUrl + 'GetAllCustomers')
+    loadCustomers(api_key) {
+        const params = new HttpParams().set('api_key', api_key);
+        return this.http.get(environment.apiUrl + 'GetAllCustomers', { params })
     }
 
-    loadCountries() {
-        return this.http.get(environment.apiUrl + 'GetAllCountries')
+    loadCountries(api_key) {
+        const params = new HttpParams().set('api_key', api_key);
+        return this.http.get(environment.apiUrl + 'GetAllCountries' , { params })
     }
 
-    loadCustomerContacts(customerid) {
-        const params = new HttpParams().set('customer_id', customerid);
+    loadCustomerContacts(customerid, api_key) {
+        const params = new HttpParams().set('customer_id', customerid).set('api_key', api_key);
         return this.http.get(environment.apiUrl + 'GetCustomerContactByCustomerID', { params }) 
     }
 
-    loadCarrier(){
-        return this.http.get(environment.apiUrl + 'GetAllCarriers')
+    loadCarrier(api_key){
+        const params = new HttpParams().set('api_key', api_key);
+        return this.http.get(environment.apiUrl + 'GetAllCarriers', { params })
     }
 
 
 
 
-    postNewCustomer(request: CustomerModel) {
+    postNewCustomer(request: CustomerModel, api_key) {
+        const params = new HttpParams().set('api_key', api_key);
         return this.http.post(environment.apiUrl + 'CreateCustomer', {
             name: request.name,
             agreed_solution_time: request.agreed_solution_time,
             crm_id: request.crm_id
-        });
+        }, { params });
     }
 
 
     
-    postNewCustomerContact(request: CustomerContactModel) {
+    postNewCustomerContact(request: CustomerContactModel, api_key) {
+        const params = new HttpParams().set('api_key', api_key);
         return this.http.post(environment.apiUrl + 'CreateCustomerContact', {
             customer_id: request.customerid,
             email: request.email,
@@ -120,27 +108,7 @@ export class SystemValuesService {
             firstname: request.firstname,
             lastname: request.lastname,
             name: request.name
-        });
-    }
-
-    getTruckTypes() {
-        return this.truckTypes;
-    }
-
-    getStatusTypes() {
-        return this.statusTypes;
-    }
-
-    getAllCustomers() {
-        return this.customers;
-    }
-
-    getAllCarriers() {
-        return this.carriers;
-    }
-
-    getAllCountries() {
-        return this.countries;
+        }, { params });
     }
 
 }

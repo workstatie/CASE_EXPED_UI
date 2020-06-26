@@ -9,6 +9,7 @@ import { RequestService } from 'src/app/services/requests.service';
 import { MatSort } from '@angular/material/sort';
 import {environment} from '../../../../environments/environment'
 import { CustomerModel } from 'src/app/models/customer.model';
+import { OktaAuthService } from '@okta/okta-angular';
 
 @Component({
   selector: 'unassigned-req',
@@ -21,6 +22,8 @@ export class UnassignedReqComponent implements OnInit {
   myTicketsLoaded: Boolean = false;
   statusValues: StatusTypeModel[];
 
+  token;
+
   displayedColumns: string[] = ['Client',  'CreationDate'];
   dataSource = new MatTableDataSource(this.myTickets);
   interval : any;
@@ -32,14 +35,20 @@ export class UnassignedReqComponent implements OnInit {
 
   constructor(
     private requestService: RequestService,
-    private systemService: SystemValuesService) { }
+    private systemService: SystemValuesService,
+    public oktaAuth: OktaAuthService) { }
 
-  ngOnInit() {
-    this.requestService.getUnassignedRequests();
+  async ngOnInit() {
+    console.log("Unassigned loading")
+
+    this.token = await this.oktaAuth.getAccessToken();
+    this.requestService.getUnassignedRequests(this.token);
 
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit() {
+    this.token = await this.oktaAuth.getAccessToken();
+
     this.getUnassignedTickets();
     
    
@@ -53,7 +62,10 @@ export class UnassignedReqComponent implements OnInit {
       this.getUnassignedTickets();
     }, environment.refreshRate);
 
-    this.statusValues = this.systemService.getStatusTypes();
+    this.systemService.loadStatusTypes(this.token).subscribe(res => {
+      this.statusValues=res['recordset']
+  });
+    
   }
 
   ticketClicked(mail) {

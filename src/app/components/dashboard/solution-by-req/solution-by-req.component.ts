@@ -12,6 +12,7 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
 import { CarrierModel } from 'src/app/models/carrier.model';
 import { CarrierDialogComponent } from './pop-ups/dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { OktaAuthService } from '@okta/okta-angular';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './solution-by-req.component.html',
   styleUrls: ['./solution-by-req.component.scss']
 })
-export class SolutionByReqComponent implements OnChanges, OnInit {
+export class SolutionByReqComponent implements OnChanges {
 
   @Input() request: RequestsModel;
   @ViewChild(CountdownComponent) counter: CountdownComponent;
@@ -32,27 +33,34 @@ export class SolutionByReqComponent implements OnChanges, OnInit {
   solutionTime: any;
   counterConfig : any;
   carriers: CarrierModel[];
-  
+  token;
 
 
   constructor(
     private solutionService: SolutionService,
     private requestService: RequestService,
     private systemService: SystemValuesService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public oktaAuth: OktaAuthService
     ) { }
 
-    ngOnInit(){
-      this.carriers=this.systemService.getAllCarriers();
 
-    }
+    async ngOnChanges() {
 
-  ngOnChanges(): void {
+      this.token = await this.oktaAuth.getAccessToken();
 
+      this.systemService.loadCarrier(this.token).subscribe(res => {
+        this.carriers=res['recordset']
+    });
 
-    this.statusValues = this.systemService.getStatusTypes();
+    
+
+    this.systemService.loadStatusTypes(this.token).subscribe(res => {
+      this.statusValues=res['recordset']
+  });
+  
     this.selection = new SelectionModel<SolutionModel>(false, []);
-    this.solutionService.getSolutionForRequestId(this.request.id).subscribe(res => {
+    this.solutionService.getSolutionForRequestId(this.request.id,this.token).subscribe(res => {
       this.solutions = res['recordset'];
       for (let solution of this.solutions){
         let idx =this.carriers.findIndex( carrier => carrier.id = solution.carrier_id)
@@ -104,7 +112,7 @@ export class SolutionByReqComponent implements OnChanges, OnInit {
   submitSolution(){
 
    // console.log(this.selection.selected[0].id)
-    this.requestService.updateStatusReqById(this.request.id,4).subscribe(res =>{
+    this.requestService.updateStatusReqById(this.request.id,4, this.token).subscribe(res =>{
       console.log('solution sent')
     })
 

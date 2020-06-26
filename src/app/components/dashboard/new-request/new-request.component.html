@@ -1,5 +1,5 @@
 
-<div [formGroup]="enterNewRequestForm">
+<div *ngIf="token" [formGroup]="enterNewRequestForm">
     <h2>Add a new Request</h2>
     
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" >

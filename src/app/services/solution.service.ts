@@ -14,12 +14,13 @@ export class SolutionService {
     }
 
 
-    getSolutions() {
-        return this.http.get(environment.apiUrl + 'GetSolutions' )
+    getSolutions(api_key) {
+        const params = new HttpParams().set('api_key', api_key);
+        return this.http.get(environment.apiUrl + 'GetSolutions' , { params })
     }
 
-    getSolutionForRequestId(reqId){
-        const params = new HttpParams().set('request_id', reqId);
+    getSolutionForRequestId(reqId, api_key ){
+        const params = new HttpParams().set('request_id', reqId).set('api_key', api_key);
         return this.http.get(environment.apiUrl + 'GetSolutionForRequestID', { params } )
     }
 

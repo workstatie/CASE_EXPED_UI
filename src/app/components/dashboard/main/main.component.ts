@@ -28,6 +28,7 @@ export class MainComponent implements OnInit {
   isAuthenticated: boolean;
   notificationsNumber = '0';
   user: UserModel;
+  token;
 
   constructor(
     public oktaAuth: OktaAuthService,
@@ -41,10 +42,12 @@ export class MainComponent implements OnInit {
   async ngOnInit() {
     const user = await this.oktaAuth.getUser();
 
-    console.log(this.oktaAuth.getAccessToken());
+    this.token = await this.oktaAuth.getAccessToken();
+
+    this.systemValuesService.setUser(this.user);
   
 
-    this.systemValuesService.getUserFromDB(user.email).subscribe(res=>{
+    this.systemValuesService.getUserFromDB(user.email, this.token).subscribe(res=>{
       this.user = res['recordset'][0];
       this.systemValuesService.setUser(this.user)
     });
@@ -52,7 +55,7 @@ export class MainComponent implements OnInit {
        
     this.user = await this.systemValuesService.getUser();
 
-    this.solutionService.getSolutions().subscribe(res => {
+    this.solutionService.getSolutions(this.token).subscribe(res => {
       this.pendingSolutions = res['recordsets'][0];
       this.notificationsNumber = this.pendingSolutions.length.toString();
     });
@@ -111,7 +114,7 @@ export class MainComponent implements OnInit {
   // }
 
   loadSolutionByReq(reqId) {
-    this.requestService.getRequestByID(reqId).subscribe(res => {
+    this.requestService.getRequestByID(reqId,this.token).subscribe(res => {
       this.selectedTicket = res['recordset'][0];
       this.validateData = false;
       this.dashboardView = false;

@@ -14,6 +14,7 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
   export class AddCustomerContactDialogComponent implements OnInit{
     [x: string]: any;
     customerContactForm: FormGroup;
+    token;
 
     constructor(
       private systemService: SystemValuesService,
@@ -22,8 +23,9 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
       @Inject(MAT_DIALOG_DATA) public data: any
      ) {}
   
-    ngOnInit(){
-      
+    async ngOnInit(){
+          this.token = await this.oktaAuth.getAccessToken();
+
      this.customerContactForm = new FormGroup({
         firstname: new FormControl(null, Validators.required),
         lastname: new FormControl(null, Validators.required),
@@ -55,7 +57,7 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
           this.customerContactForm.controls['firstname'].value +' '+this.customerContactForm.controls['lastname'].value   
           );
 
-          this.systemService.postNewCustomerContact(postNewRequest).subscribe(res => console.log(res));
+          this.systemService.postNewCustomerContact(postNewRequest, this.token).subscribe(res => console.log(res));
           this.dialogRef.close(this.customerContactForm.controls['firstname'].value +' '+this.customerContactForm.controls['lastname'].value );
       }
 

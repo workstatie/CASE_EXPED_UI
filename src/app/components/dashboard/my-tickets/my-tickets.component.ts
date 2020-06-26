@@ -8,7 +8,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { RequestService } from 'src/app/services/requests.service';
 import { MatSort } from '@angular/material/sort';
 import { UserModel } from 'src/app/models/user.model';
-import {environment} from '../../../../environments/environment'
+import { environment } from '../../../../environments/environment'
+import { OktaAuthService } from '@okta/okta-angular';
 
 @Component({
   selector: 'my-tickets',
@@ -22,8 +23,9 @@ export class MyTicketsComponent implements OnInit {
   myTicketsLoaded: Boolean = false;
   statusValues: StatusTypeModel[];
   displayedColumns: string[] = ['Route', 'Status'];
+  token;
 
-  
+
   dataSource = new MatTableDataSource(this.myTickets);
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
@@ -36,25 +38,29 @@ export class MyTicketsComponent implements OnInit {
 
   constructor(
     private requestService: RequestService,
-    private systemService: SystemValuesService) { }
+    private systemService: SystemValuesService,
+    public oktaAuth: OktaAuthService) { }
 
   async ngOnInit() {
- 
-    
-    this.user=  this.systemService.getUser();
-  
+    console.log("My tickets loading")
+
+    this.token = await this.oktaAuth.getAccessToken();
+
+    this.user = this.systemService.getUser();
+
     this.getTicketsById(this.user.ID);
-    this.requestService.myRequests$.subscribe( data => {
-       this.myTickets = data;
+    this.requestService.myRequests$.subscribe(data => {
+      this.myTickets = data;
     })
-    this.interval = setInterval( () =>{
+    this.interval = setInterval(() => {
       this.getTicketsById(this.user.ID);
     }, environment.refreshRate);
 
-  }
 
-  ngAfterViewInit(): void {
-    this.statusValues = this.systemService.getStatusTypes();
+    this.systemService.loadStatusTypes(this.token).subscribe(res => {
+      this.statusValues = res['recordset']
+    });
+
   }
 
   ticketClicked(mail) {
@@ -66,10 +72,10 @@ export class MyTicketsComponent implements OnInit {
     this.onNewRequest.emit('newReq');
   }
 
-  getTicketsById(id) {
-
+   getTicketsById(id) {
     this.myTicketsLoaded = true;
-    this.requestService.getMyRequests(id);
+    this.requestService.getMyRequests(id, this.token);
+    console.log(this.myTickets)
     this.dataSource = new MatTableDataSource(this.myTickets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

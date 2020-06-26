@@ -17,8 +17,8 @@ export class RequestService {
     constructor(private http: HttpClient) {
     }
 
-    getMyRequests(userId) {
-        const params = new HttpParams().set('user_id', userId);
+    getMyRequests(userId, api_key) {
+        const params = new HttpParams().set('user_id', userId).set('api_key', api_key);
         this.http.get(environment.apiUrl + 'GetRequestByCountry', { params })
             .pipe(map(res => res['recordset'])).subscribe((res: RequestsModel[]) => {
                 // data = res['recordset'];
@@ -26,27 +26,29 @@ export class RequestService {
             });
     }
 
-    getUnassignedRequests() {
-          
-            this.http.get(environment.apiUrl + 'GetUnassignedRequests')
+    getUnassignedRequests(api_key) {
+        const params = new HttpParams().set('api_key', api_key);
+            this.http.get(environment.apiUrl + 'GetUnassignedRequests',{ params })
               .pipe(map(res => res['recordset'])).subscribe( (res : RequestsModel[]) =>{
                this.unassignedRequests$.next(res);
             });
     }
 
 
-    getRequestByID(id) {
-        const params = new HttpParams().set('id', id);
+    getRequestByID(id,api_key) {
+        const params = new HttpParams().set('id', id).set('api_key', api_key);
         return this.http.get(environment.apiUrl + 'GetRequestDetails', { params })
     }
 
-    getRequestByCountry(user_id) {
-        const params = new HttpParams().set('user_id', user_id);
+    getRequestByCountry(user_id, api_key) {
+        const params = new HttpParams().set('user_id', user_id).set('api_key', api_key);
         return this.http.get(environment.apiUrl + 'GetRequestByCountry', { params })
     }
 
 
-    postNewRequest(request: RequestsModel) {
+    postNewRequest(request: RequestsModel, api_key) {
+        const params = new HttpParams().set('api_key', api_key);
+
         return this.http.post(environment.apiUrl + 'NewRequest', {
             customer_id: request.customer_id,
             customer_contact_id: request.customer_contact_id,
@@ -74,11 +76,11 @@ export class RequestService {
             jumbo_flag: request.jumbo_flag,
             frigo_flag: request.frigo_flag,
             intermodal_flag: request.intermodal_flag
-        });
+        }, { params });
     }
 
-    putRequestById(request: RequestsModel, id) {
-        const params = new HttpParams().set('id', id);
+    putRequestById(request: RequestsModel, id, api_key) {
+        const params = new HttpParams().set('id', id).set('api_key', api_key);;
         return this.http.put(environment.apiUrl + 'UpdateRequest', {
             customer_id: request.customer_id,
             from_address_city: request.from_address_city,
@@ -100,10 +102,10 @@ export class RequestService {
         }, { params });
     }
 
-    updateStatusReqById(id, status) {
+    updateStatusReqById(id, status, api_key) {
 
 
-        const params = new HttpParams().set('id', id);
+        const params = new HttpParams().set('id', id).set('api_key', api_key);;;
 
         return this.http.patch(environment.apiUrl + 'UpdateRequest', {
             request_status_type_id: status

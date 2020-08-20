@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Transport Hub';
+  title = 'M.A.R.S.';
 
   isAuthenticated: boolean;
 

@@ -10,6 +10,8 @@ import { CustomerModel } from '../models/customer.model';
 import { CustomerContactModel } from '../models/customercontact.model';
 import { CarrierModel } from '../models/carrier.model';
 import { CountryModel } from '../models/country.model';
+import { OktaAuthService } from '@okta/okta-angular';
+import { map } from 'rxjs/operators';
 
 
 @Injectable()
@@ -18,17 +20,45 @@ export class SystemValuesService {
     truckTypes: TruckTypeModel[] = [];
     statusTypes: StatusTypeModel[] = [];
     userLoggedIn: UserModel;
-    customers: CustomerModel[]= [];
-    customerContacts: CustomerContactModel[]= [];
-    carriers :CarrierModel[]=[];
-    countries: CountryModel[]=[];
+    customers: CustomerModel[] = [];
+    customerContacts: CustomerContactModel[] = [];
+    carriers: CarrierModel[] = [];
+    countries: CountryModel[] = [];
     token;
+    oktaUser;
 
-    constructor(
-        private http: HttpClient
-        ) {
-            
-        }
+    constructor(private http: HttpClient,
+        public oktaAuth: OktaAuthService) {    
+    }
+
+    
+    async initToken() {
+        const user = await this.oktaAuth.getUser();
+        this.setOktaUser(user);
+        this.token = await this.oktaAuth.getAccessToken();
+       
+    }
+
+    logout(){
+         this.oktaAuth.logout('/');
+    }
+
+    setOktaUser(user){
+        this.oktaUser = user;
+    }
+    
+    getOktaUser(){
+        return this.oktaUser;
+    }
+
+    getToken() {
+        return this.token;
+    }
+
+    setToken(token) {
+        this.token = token;
+    }
+
 
     setUser(user) {
         this.userLoggedIn = user;
@@ -38,69 +68,68 @@ export class SystemValuesService {
         return this.userLoggedIn;
     }
 
-    getUserFromDB(userEmail, api_key) {
-        const params = new HttpParams().set('email', userEmail).set('api_key', api_key);
-        return this.http.get(environment.apiUrl + 'GetUserByEmail', { params });
+    getUserFromDB(email) {
+        const params = new HttpParams().set('email', email);
+        return this.http.get(environment.apiUrl + 'GetUserByEmail', {params});
     }
 
 
-    loadTruckTypes(api_key) {
-        const params = new HttpParams().set('api_key', api_key);
-        return this.http.get(environment.apiUrl + 'GetAllTruckTypes', { params })
+    loadTruckTypes() {
+
+        return this.http.get(environment.apiUrl + 'GetAllTruckTypes')
     }
 
-    getCustomerByName(name, api_key) {
-        const params = new HttpParams().set('name', name).set('api_key', api_key);
-        return this.http.get(environment.apiUrl + 'GetCustomerByName', { params })
+    getCustomerByName(name) {
+        const params = new HttpParams().set('name', name);
+        return this.http.get(environment.apiUrl + 'GetCustomerByName', {params})
     }
 
     getCustomerContactByName(name, customerid) {
         const params = new HttpParams().set('name', name).set('customer_id', customerid);
-        return this.http.get(environment.apiUrl + 'GetCustomerByName', { params })
+        return this.http.get(environment.apiUrl + 'GetCustomerByName', {params})
     }
 
 
-    loadStatusTypes(api_key) {
-        const params = new HttpParams().set('api_key', api_key)
-        return this.http.get(environment.apiUrl + 'GetStatusTypes', { params })
+    loadStatusTypes() {
+        return this.http.get(environment.apiUrl + 'GetStatusTypes')
     }
 
-    loadCustomers(api_key) {
-        const params = new HttpParams().set('api_key', api_key);
-        return this.http.get(environment.apiUrl + 'GetAllCustomers', { params })
+    loadCustomers() {
+
+        return this.http.get(environment.apiUrl + 'GetAllCustomers')
     }
 
-    loadCountries(api_key) {
-        const params = new HttpParams().set('api_key', api_key);
-        return this.http.get(environment.apiUrl + 'GetAllCountries' , { params })
+    loadCountries() {
+
+        return this.http.get(environment.apiUrl + 'GetAllCountries')
     }
 
-    loadCustomerContacts(customerid, api_key) {
-        const params = new HttpParams().set('customer_id', customerid).set('api_key', api_key);
-        return this.http.get(environment.apiUrl + 'GetCustomerContactByCustomerID', { params }) 
+    loadCustomerContacts(customerid ) {
+        const params = new HttpParams().set('customer_id', customerid);
+        return this.http.get(environment.apiUrl + 'GetCustomerContactByCustomerID', {params})
     }
 
-    loadCarrier(api_key){
-        const params = new HttpParams().set('api_key', api_key);
-        return this.http.get(environment.apiUrl + 'GetAllCarriers', { params })
+    loadCarrier() {
+
+        return this.http.get(environment.apiUrl + 'GetAllCarriers')
     }
 
 
 
 
-    postNewCustomer(request: CustomerModel, api_key) {
-        const params = new HttpParams().set('api_key', api_key);
+    postNewCustomer(request: CustomerModel) {
+       
         return this.http.post(environment.apiUrl + 'CreateCustomer', {
             name: request.name,
             agreed_solution_time: request.agreed_solution_time,
             crm_id: request.crm_id
-        }, { params });
+        });
     }
 
 
-    
-    postNewCustomerContact(request: CustomerContactModel, api_key) {
-        const params = new HttpParams().set('api_key', api_key);
+
+    postNewCustomerContact(request: CustomerContactModel) {
+       
         return this.http.post(environment.apiUrl + 'CreateCustomerContact', {
             customer_id: request.customerid,
             email: request.email,
@@ -108,7 +137,7 @@ export class SystemValuesService {
             firstname: request.firstname,
             lastname: request.lastname,
             name: request.name
-        }, { params });
+        });
     }
 
 }

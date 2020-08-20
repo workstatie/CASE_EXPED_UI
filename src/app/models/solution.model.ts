@@ -8,7 +8,8 @@ export class SolutionModel {
     truck_type_id :  string ;
     details :  string ;
     transit_time :  string ;
- 
+    carrier_email: string;
+    email_response: string;
 
     constructor(
         id: string,

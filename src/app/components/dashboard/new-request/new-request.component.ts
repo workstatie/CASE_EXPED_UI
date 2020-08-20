@@ -42,9 +42,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
   filteredContactOptions: Observable<CustomerContactModel[]>;
   newCustomerContactCreated: string;
   opencustomercontactfield: Boolean = false;
-  token;
-
-
+  tokenLoaded= false;
   constructor(
     private systemService: SystemValuesService,
     private snackBar: MatSnackBar,
@@ -59,27 +57,27 @@ export class NewRequestComponent implements OnInit, OnChanges {
   // @Input() ticket: RequestsModel;
   @ViewChild('picker') picker: any;
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(){
 
-    this.token = await this.oktaAuth.getAccessToken();
-    
-    //console.log(token);
+    await this.systemService.initToken();    
 
+
+    this.tokenLoaded= true;
     this.loadTime = new Date( new Date().getFullYear(),new Date().getMonth(),new Date().getDate(),8,0,0);
     this.unloadTime = new Date( new Date().getFullYear(),new Date().getMonth(),new Date().getDate(),16,0,0);
 
 
-    this.systemService.loadCustomers(this.token).subscribe(res => {
+    this.systemService.loadCustomers().subscribe(res => {
 
       this.customers = res['recordset']
     });
 
-    this.systemService.loadCountries(this.token).subscribe(res => {
+    this.systemService.loadCountries().subscribe(res => {
       this.countries = res['recordset']
 
     });
 
-    this.systemService.loadTruckTypes(this.token).subscribe(res => {
+    this.systemService.loadTruckTypes().subscribe(res => {
       this.truckTypes = res['recordset']
     });
 
@@ -203,6 +201,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
 
   onSubmit() {
+   
+
     const validationTime = new Date();
     validationTime.setHours(validationTime.getHours() + 2);
 
@@ -250,6 +250,9 @@ export class NewRequestComponent implements OnInit, OnChanges {
         intermodal = 0;
       }
 
+      const goods_weight_T=  parseInt(this.enterNewRequestForm.controls['goods_weight'].value)*1000;
+      const truckID = this.truckTypes.findIndex(x => x.name === this.enterNewRequestForm.controls['truckType'].value[0])+1
+
       const postNewRequest = new RequestsModel(
         this.enterNewRequestForm.controls['customerSearch'].value.id,
         this.enterNewRequestForm.controls['customerContactSearch'].value.id,
@@ -266,8 +269,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
         "",
         this.enterNewRequestForm.controls['solutiontime'].value,
         "",
-        this.enterNewRequestForm.controls['goods_weight'].value,
-        this.truckTypes.findIndex(x => x.name === this.enterNewRequestForm.controls['truckType'].value[0]).toString(),
+        goods_weight_T.toString(),
+        truckID.toString(),
         this.enterNewRequestForm.controls['special_request'].value,
         "",
         this.systemService.getUser().ID,
@@ -281,7 +284,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
       );
 
 
-      this.requestService.postNewRequest(postNewRequest, this.token).subscribe(res => console.log(res));
+      this.requestService.postNewRequest(postNewRequest, ).subscribe(res => console.log(res));
 
       this.snackBar.open('Form Submitted', 'close', {
         duration: 1500
@@ -318,8 +321,6 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
   createNewClient(): void {
 
-
-
     var customername;
 
 
@@ -331,15 +332,12 @@ export class NewRequestComponent implements OnInit, OnChanges {
     else {
       customername = this.enterNewRequestForm.controls["customerSearch"].value.name
     }
-
-
-    this.systemService.getCustomerByName(customername, this.token).subscribe(res => {
-
+    
+    this.systemService.getCustomerByName(customername).subscribe(res => {
 
       if (res["recordset"].length > 0) {
 
-
-        this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id, this.token).subscribe(res => {
+        this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id, ).subscribe(res => {
 
           this.customerContacts = res["recordset"]
 
@@ -374,9 +372,6 @@ export class NewRequestComponent implements OnInit, OnChanges {
       }
 
     })
-
-
-
   }
 
   createNewClientContact(): void {
@@ -391,7 +386,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe(result => {
       // this.enterNewRequestForm.controls["customerContactSearch"].patchValue("result");
-      this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id, this.token).subscribe(res => {
+      this.systemService.loadCustomerContacts(this.enterNewRequestForm.controls["customerSearch"].value.id ).subscribe(res => {
 
         this.customerContacts = res["recordset"]
 

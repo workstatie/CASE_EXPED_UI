@@ -23,8 +23,6 @@ export class MyTicketsComponent implements OnInit {
   myTicketsLoaded: Boolean = false;
   statusValues: StatusTypeModel[];
   displayedColumns: string[] = ['Route', 'Status'];
-  token;
-
 
   dataSource = new MatTableDataSource(this.myTickets);
 
@@ -42,13 +40,15 @@ export class MyTicketsComponent implements OnInit {
     public oktaAuth: OktaAuthService) { }
 
   async ngOnInit() {
-    console.log("My tickets loading")
 
-    this.token = await this.oktaAuth.getAccessToken();
+    await this.systemService.initToken();
+    this.systemService.getUserFromDB(this.systemService.getOktaUser().email).subscribe( res  =>{
+      this.user = res["recordset"][0];
+      this.systemService.setUser(this.user);
+      this.getTicketsById(this.user.ID);
 
-    this.user = this.systemService.getUser();
+    });
 
-    this.getTicketsById(this.user.ID);
     this.requestService.myRequests$.subscribe(data => {
       this.myTickets = data;
     })
@@ -56,8 +56,7 @@ export class MyTicketsComponent implements OnInit {
       this.getTicketsById(this.user.ID);
     }, environment.refreshRate);
 
-
-    this.systemService.loadStatusTypes(this.token).subscribe(res => {
+    this.systemService.loadStatusTypes().subscribe(res => {
       this.statusValues = res['recordset']
     });
 
@@ -74,8 +73,7 @@ export class MyTicketsComponent implements OnInit {
 
    getTicketsById(id) {
     this.myTicketsLoaded = true;
-    this.requestService.getMyRequests(id, this.token);
-    console.log(this.myTickets)
+    this.requestService.getMyRequests(id);
     this.dataSource = new MatTableDataSource(this.myTickets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

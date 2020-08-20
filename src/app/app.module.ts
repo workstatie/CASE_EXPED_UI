@@ -21,7 +21,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import { ValidateDataComponent } from './components/dashboard/validate-data/validate-data.component';
 import {  RequestService } from './services/requests.service';
 import { MyTicketsComponent } from './components/dashboard/my-tickets/my-tickets.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { SystemValuesService } from './services/systemValues.service';
 import {MatTableModule} from '@angular/material/table';
@@ -57,6 +57,8 @@ import {environment} from '../environments/environment';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { CarrierDialogComponent } from './components/dashboard/solution-by-req/pop-ups/dialog';
 import { BarRatingModule } from "ngx-bar-rating";
+import { OktaHttpInterceptor } from './services/okta-http-interceptor';
+import { AuthService } from './services/auth.service';
 
 
 const oktaConfig = {
@@ -128,8 +130,14 @@ const oktaConfig = {
     RequestService,
     SystemValuesService,
     SolutionService,
+    AuthService,
     {provide : OKTA_CONFIG, useValue: oktaConfig},
-    DatePipe
+    DatePipe,
+    {
+      provide : HTTP_INTERCEPTORS,
+      useClass: OktaHttpInterceptor,
+      multi: true
+    }
   ],
   entryComponents:[
     DialogComponent

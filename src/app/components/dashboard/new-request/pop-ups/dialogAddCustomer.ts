@@ -1,9 +1,10 @@
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, AfterContentChecked, DoCheck} from '@angular/core';
 import { UserModel } from 'src/app/models/user.model';
 import { CustomerModel } from 'src/app/models/customer.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SystemValuesService } from 'src/app/services/systemValues.service';
+import { OktaAuthService } from '@okta/okta-angular';
 
 
 @Component({
@@ -14,17 +15,17 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
   export class AddCustomerDialogComponent implements OnInit{
     [x: string]: any;
     customerForm: FormGroup;
-    token;
+    token = " ";
 
     constructor(
       private systemService: SystemValuesService,
+      public oktaAuth: OktaAuthService,
       public dialogRef: MatDialogRef<AddCustomerDialogComponent>,
       @Inject(MAT_DIALOG_DATA) public Customer: CustomerModel,
       @Inject(MAT_DIALOG_DATA) public data: any
      ) {}
   
-     async ngOnInit(){
-      this.token = await this.oktaAuth.getAccessToken();
+     ngOnInit(){
 
      this.customerForm = new FormGroup({
         customername: new FormControl(null, Validators.required),
@@ -38,8 +39,8 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
       solutiontime: 60
      });
      
-    
     }
+
     
     onNoClick(): void {
       this.dialogRef.close();
@@ -65,7 +66,7 @@ import { SystemValuesService } from 'src/app/services/systemValues.service';
           this.customerForm.controls['solutiontime'].value
           );
 
-          this.systemService.postNewCustomer(postNewRequest, this.token).subscribe(res => console.log(res));
+          this.systemService.postNewCustomer(postNewRequest).subscribe(res => console.log(res));
           this.dialogRef.close();
       }
 

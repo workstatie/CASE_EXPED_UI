@@ -6,9 +6,8 @@ import { SolutionModel } from 'src/app/models/solution.model';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { SolutionBottomSheet } from './popUps/bottomSharedSolution';
 import { RequestService } from 'src/app/services/requests.service';
-import { OktaAuthService } from '@okta/okta-angular';
 import { UserModel } from 'src/app/models/user.model';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from './popUps/dialog';
 
 @Component({
@@ -28,34 +27,25 @@ export class MainComponent implements OnInit {
   isAuthenticated: boolean;
   notificationsNumber = '0';
   user: UserModel;
-  token;
+
 
   constructor(
-    public oktaAuth: OktaAuthService,
     public solutionService: SolutionService,
-    public systemValuesService: SystemValuesService,
+    public systemService: SystemValuesService,
     private requestService: RequestService,
     private _bottomSheet: MatBottomSheet,
     public dialog: MatDialog
   ) { }
 
   async ngOnInit() {
-    const user = await this.oktaAuth.getUser();
 
-    this.token = await this.oktaAuth.getAccessToken();
-
-    this.systemValuesService.setUser(this.user);
-  
-
-    this.systemValuesService.getUserFromDB(user.email, this.token).subscribe(res=>{
-      this.user = res['recordset'][0];
-      this.systemValuesService.setUser(this.user)
+    await this.systemService.initToken();
+    
+    this.systemService.getUserFromDB(this.systemService.getOktaUser().email).subscribe( res  =>{
+      this.user = res["recordset"][0];
     });
 
-       
-    this.user = await this.systemValuesService.getUser();
-
-    this.solutionService.getSolutions(this.token).subscribe(res => {
+    this.solutionService.getSolutions().subscribe(res => {
       this.pendingSolutions = res['recordsets'][0];
       this.notificationsNumber = this.pendingSolutions.length.toString();
     });
@@ -74,7 +64,7 @@ export class MainComponent implements OnInit {
 
 
   logout() {
-    this.oktaAuth.logout('/');
+    this.systemService.logout();
   }
 
   openBottomSheet() {
@@ -114,7 +104,7 @@ export class MainComponent implements OnInit {
   // }
 
   loadSolutionByReq(reqId) {
-    this.requestService.getRequestByID(reqId,this.token).subscribe(res => {
+    this.requestService.getRequestByID(reqId).subscribe(res => {
       this.selectedTicket = res['recordset'][0];
       this.validateData = false;
       this.dashboardView = false;

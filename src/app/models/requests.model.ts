@@ -29,7 +29,8 @@ export class RequestsModel {
     jumbo_flag: string;
     frigo_flag: string;
     intermodal_flag: string;
-    
+    status_name:string;
+
     constructor(
         customer_id : string,
         customer_contact_id : string,

@@ -35,15 +35,13 @@ export class ValidateDataComponent implements OnChanges {
   checkSafeFleet: Boolean = true;
   checkBursaTransport: Boolean = true;
 
-  token;
-
   truckTypes: TruckTypeModel[];
   assignToCurrentUser: Boolean = true;
   truckTypeSelected: String = "prelata";
 
   async ngOnChanges(): Promise<void> {
-    this.token = await this.oktaAuth.getAccessToken();
-    this.systemService.loadTruckTypes(this.token).subscribe(res => {
+    await this.systemService.initToken();
+    this.systemService.loadTruckTypes().subscribe(res => {
       this.truckTypes = res['recordset'];
 
       this.truckTypeSelected = this.truckTypes[this.ticket.truck_type_id].name;
@@ -113,7 +111,7 @@ export class ValidateDataComponent implements OnChanges {
       postNewRequest.customer_id = this.systemService.getUser().ID
       //postNewRequest
 
-      this.requestService.putRequestById(postNewRequest, this.ticket.id, this.token).subscribe(res => console.log(res));
+      this.requestService.putRequestById(postNewRequest, this.ticket.id).subscribe(res => console.log(res));
 
       this.snackBar.open('Update made', 'close', {
         duration: 1500

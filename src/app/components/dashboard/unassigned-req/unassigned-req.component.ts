@@ -39,15 +39,14 @@ export class UnassignedReqComponent implements OnInit {
     public oktaAuth: OktaAuthService) { }
 
   async ngOnInit() {
-    console.log("Unassigned loading")
+    await this.systemService.initToken();    
 
-    this.token = await this.oktaAuth.getAccessToken();
-    this.requestService.getUnassignedRequests(this.token);
+    this.requestService.getUnassignedRequests();
 
   }
 
   async ngAfterViewInit() {
-    this.token = await this.oktaAuth.getAccessToken();
+    await this.systemService.initToken();    
 
     this.getUnassignedTickets();
     
@@ -62,7 +61,7 @@ export class UnassignedReqComponent implements OnInit {
       this.getUnassignedTickets();
     }, environment.refreshRate);
 
-    this.systemService.loadStatusTypes(this.token).subscribe(res => {
+    this.systemService.loadStatusTypes().subscribe(res => {
       this.statusValues=res['recordset']
   });
     

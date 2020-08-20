@@ -1,5 +1,5 @@
 
-<div *ngIf="token" [formGroup]="enterNewRequestForm">
+<div *ngIf="tokenLoaded" [formGroup]="enterNewRequestForm">
     <h2>Add a new Request</h2>
     
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" >
@@ -101,7 +101,7 @@
     <h4>Cargo details</h4>
     <div style="margin-top:30px;" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
         <mat-form-field fxFlex="25%" class="example-full-width">
-            <mat-label>Weight (KG)</mat-label>
+            <mat-label>Weight (Tons)</mat-label>
             <input matInput formControlName="goods_weight">
         </mat-form-field>
       

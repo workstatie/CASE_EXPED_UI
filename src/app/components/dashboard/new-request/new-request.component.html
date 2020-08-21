@@ -41,6 +41,12 @@
                   {{option3.name}}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error *ngIf="enterNewRequestForm.controls['countryFrom'].hasError('required')">
+                Please enter a value
+            </mat-error>
+            <mat-error *ngIf="enterNewRequestForm.controls['countryFrom'].hasError('incorrect')">
+                Please select from the dropdown list
+            </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex="15%" class="example-full-width">
             <mat-label>City from</mat-label>
@@ -50,18 +56,18 @@
             <mat-label>Postcode from</mat-label>
             <input matInput formControlName="postcodeFrom">
         </mat-form-field>
-        <mat-form-field fxFlex="15%" class="example-full-width">
-            <input formControlName="loadTime" matInput [ngxMatDatetimePicker]="loadPicker" 
+        <mat-form-field fxFlex="25%" class="example-full-width">
+            <input formControlName="loadTime" matInput (dateChange)="startDateModified($event)" [ngxMatDatetimePicker]="loadPicker" 
                 placeholder="Loading Time Start">
             <mat-datepicker-toggle matSuffix [for]="loadPicker"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker  #loadPicker></ngx-mat-datetime-picker>
+            <ngx-mat-datetime-picker #loadPicker></ngx-mat-datetime-picker>
         </mat-form-field>
-        <mat-form-field fxFlex="15%" class="example-full-width">
+        <!-- <mat-form-field fxFlex="15%" class="example-full-width">
             <input formControlName="loadTimeEnd" matInput [ngxMatDatetimePicker]="loadPicker2" 
                 placeholder="Loading Time End" >
             <mat-datepicker-toggle matSuffix [for]="loadPicker2" ></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #loadPicker2 ></ngx-mat-datetime-picker>
-        </mat-form-field>
+        </mat-form-field> -->
 
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
@@ -73,6 +79,12 @@
                   {{option4.name}}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error *ngIf="enterNewRequestForm.controls['countryTo'].hasError('required')">
+                Please enter a value
+            </mat-error>
+            <mat-error *ngIf="enterNewRequestForm.controls['countryTo'].hasError('incorrect')">
+                Please select a valid country
+            </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex="15%" class="example-full-width">
             <mat-label>City to</mat-label>
@@ -83,18 +95,18 @@
             <mat-label>Postcode to</mat-label>
             <input matInput formControlName="postcodeTo">
         </mat-form-field>
-        <mat-form-field fxFlex="15%" class="example-full-width">
+        <mat-form-field fxFlex="25%" class="example-full-width">
             <input matInput formControlName="unloadTime" [ngxMatDatetimePicker]="unloadPicker"
                 placeholder="Unloading Time Start">
             <mat-datepicker-toggle matSuffix [for]="unloadPicker"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #unloadPicker></ngx-mat-datetime-picker>
         </mat-form-field>
-        <mat-form-field fxFlex="15%" class="example-full-width">
+        <!-- <mat-form-field fxFlex="15%" class="example-full-width">
             <input matInput formControlName="unloadTimeEnd" [ngxMatDatetimePicker]="unloadPicker2"
                 placeholder="Unloading Time End">
             <mat-datepicker-toggle matSuffix [for]="unloadPicker2"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #unloadPicker2></ngx-mat-datetime-picker>
-        </mat-form-field>
+        </mat-form-field> -->
     </div>
 
     <mat-divider></mat-divider>

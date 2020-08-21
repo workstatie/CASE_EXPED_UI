@@ -17,6 +17,7 @@ import { CustomerContactModel } from 'src/app/models/customercontact.model';
 import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { CountryModel } from 'src/app/models/country.model';
 import { OktaAuthService } from '@okta/okta-angular';
+import { RequireMatch as RequireMatch } from '../../../helpers/requireMatch';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
   //CountryOptions: string[] = ['One', 'Two', 'Three'];
 
+  option3: string = ' ';
   enterNewRequestForm: FormGroup;
   truckTypes: TruckTypeModel[];
   assignToCurrentUser: Boolean = true;
@@ -88,8 +90,8 @@ export class NewRequestComponent implements OnInit, OnChanges {
       solutiontime: new FormControl(null),
       cityFrom: new FormControl(null, Validators.required),
       cityTo: new FormControl(null, Validators.required),
-      countryTo: new FormControl(null, Validators.required),
-      countryFrom: new FormControl(null, Validators.required),
+      countryTo: new FormControl('', [Validators.required, RequireMatch]),
+      countryFrom:new FormControl('', [Validators.required, RequireMatch]),
       postcodeTo: new FormControl(null, Validators.required),
       postcodeFrom: new FormControl(null, Validators.required),
       loadTime: new FormControl(null, Validators.required),
@@ -202,7 +204,6 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
   onSubmit() {
    
-
     const validationTime = new Date();
     validationTime.setHours(validationTime.getHours() + 2);
 
@@ -400,7 +401,6 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
 
       })
-      console.log(this.customerContacts)
       // this.test= result;
       this.newCustomerContactCreated = result;
       this.enterNewRequestForm.patchValue({ customerContactSearch: result })
@@ -409,6 +409,11 @@ export class NewRequestComponent implements OnInit, OnChanges {
 
     });
 
+  }
+
+  startDateModified(date){
+
+    this.enterNewRequestForm.controls['unloadTime'].patchValue(date.value);
   }
 
 

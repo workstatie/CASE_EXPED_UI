@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { single } from './data';
-import { cities } from './dataCities';
+import { single } from './mockData/data';
+import { cities } from './mockData/dataCities';
+import { overview } from './mockData/requestsTreated';
+import { sales } from './mockData/sales';
+import { answerRate} from './mockData/answerRateApp';
 
 
 import { NgModule } from '@angular/core';
@@ -17,21 +20,40 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 export class ChartsComponent implements OnInit {
   single: any[];
   cities: any[];
+  sales: any[];
+  answerRate: any[];
+  overview: any[];
   view: any[] = [500, 200];
 
   showLegend = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Requests';
+  xAxisLabel = 'Wins';
   showYAxisLabel = true;
-  yAxisLabel = 'City';
+  yAxisLabel = 'EUR';
 
   colorScheme = {
     domain: ['#0B1C48', '#E66912', '#9E3A14']
   };
 
+  colorScheme2 = {
+    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+  };
+  view1: any[] = [700, 200];
+
+
+  view2: any[] = [900, 400];
+  view3: any[] = [900, 400];
+
+
+  cardColor: string = '#232837';
+
+
   constructor() {
     Object.assign(this, { single });
     Object.assign(this, { cities });
+    Object.assign(this, { overview });
+    Object.assign(this, { answerRate });
+    Object.assign(this, { sales });
   }
 
   onSelect(data): void {

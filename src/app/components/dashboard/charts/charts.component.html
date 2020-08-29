@@ -1,32 +1,73 @@
-<h2>Welcome back!</h2>
+<h2>M.A.R.S. Control Room</h2>
 
-<div fxLayout="row" fxLayoutGap="20px" fxLayoutGap.xs="0" style="margin:20px; margin-top: 50px;">
-    <div fxLayout="column" fxFlex="45%" fxLayoutAlign="start stretch" fxLayoutGap="30px"  >
-        <mat-card >
-            <mat-card-title>Number of Requests</mat-card-title>
-            <ngx-charts-advanced-pie-chart [view]="view" [scheme]="colorScheme" [results]="single" [gradient]=false
-                (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
-            </ngx-charts-advanced-pie-chart>
-        </mat-card>
-    </div>
-    <div fxLayout="column" fxFlex="50%" fxLayoutAlign="start stretch" fxLayoutGap="30px"  >
-        <mat-card >
-            <mat-card-title>Number of Requests per city</mat-card-title>
-            <ngx-charts-bar-vertical
-            [view]="view"
-            [scheme]="colorScheme"
-            [results]="cities"
-            [gradient]=false
-            [xAxis]=true
-            [yAxis]=true
-            [legend]=true
-            [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel"
-            [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel"
-            (select)="onSelect($event)">
-          </ngx-charts-bar-vertical>
-        </mat-card>
-    </div>
 
-</div>
+<mat-tab-group animationDuration="0ms">
+    <mat-tab label="Overview">
+
+
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutGap.xs="0" style="margin:20px; margin-top: 50px;">
+            <div fxLayout="column" fxFlex="95%" fxLayoutAlign="start stretch" fxLayoutGap="30px">
+                <ngx-charts-number-card [view]="view2" [scheme]="colorScheme2" [results]="overview"
+                    [cardColor]="cardColor" [animations]="false">
+                </ngx-charts-number-card>
+            </div>
+        </div>
+
+
+    </mat-tab>
+
+
+    <mat-tab label="Requests">
+
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutGap.xs="0" style="margin:20px; margin-top: 50px;">
+            <div fxLayout="column" fxFlex="45%" fxLayoutAlign="start stretch" fxLayoutGap="30px">
+                <mat-card>
+                    <mat-card-title>Number of Active Requests</mat-card-title>
+                    <ngx-charts-advanced-pie-chart [view]="view" [scheme]="colorScheme" [results]="single"
+                        [gradient]=false (select)="onSelect($event)" (activate)="onActivate($event)"
+                        (deactivate)="onDeactivate($event)">
+                    </ngx-charts-advanced-pie-chart>
+                </mat-card>
+            </div>
+            <div fxLayout="column" fxFlex="50%" fxLayoutAlign="start stretch" fxLayoutGap="30px">
+                <mat-card>
+                    <mat-card-title>Wins this week</mat-card-title>
+                    <ngx-charts-bar-vertical [view]="view1" [scheme]="colorScheme" [results]="sales" [gradient]=false
+                        [xAxis]=true 
+                        [showYAxisLabel]="showYAxisLabel" [yAxisLabel]="yAxisLabel" 
+                        [yAxis]=true 
+                        [showYAxisLabel]="showYAxisLabel" [yAxisLabel]="yAxisLabel" 
+                        (select)="onSelect($event)">
+                    </ngx-charts-bar-vertical>
+                </mat-card>
+            </div>
+
+
+
+        </div>
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutGap.xs="0" style="margin:20px; margin-top: 50px;">
+            <div fxLayout="column" fxFlex="95%" fxLayoutAlign="start stretch" fxLayoutGap="30px">
+                <mat-card>
+                    <mat-card-title>Top Countries</mat-card-title>
+                    <ngx-charts-pie-grid [view]="view3" [scheme]="colorScheme" [results]="cities"
+                        (select)="onSelect($event)">
+                    </ngx-charts-pie-grid>
+                </mat-card>
+            </div>
+        </div>
+
+    </mat-tab>
+    <mat-tab label="Robots">
+        
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutGap.xs="0" style="margin:20px; margin-top: 50px;">
+            <div fxLayout="column" fxFlex="95%" fxLayoutAlign="start stretch" fxLayoutGap="30px">
+                <mat-card>
+                    <mat-card-title>Success Rate per Application Search</mat-card-title>
+                    <ngx-charts-pie-grid [view]="view3" [scheme]="colorScheme" [results]="answerRate"
+                        (select)="onSelect($event)">
+                    </ngx-charts-pie-grid>
+                </mat-card>
+            </div></div>
+
+    </mat-tab>
+</mat-tab-group>

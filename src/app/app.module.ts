@@ -36,6 +36,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SolutionService } from './services/solution.service';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import {MatListModule} from '@angular/material/list';
 import { CommonModule, DatePipe } from '@angular/common'; 
@@ -124,7 +125,8 @@ const oktaConfig = {
     NgxChartsModule,
     MatDialogModule,
     MatAutocompleteModule,
-    BarRatingModule
+    BarRatingModule,
+    MatTabsModule
   ],
   providers: [
     RequestService,

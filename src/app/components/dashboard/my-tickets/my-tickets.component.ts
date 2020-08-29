@@ -18,13 +18,16 @@ import { OktaAuthService } from '@okta/okta-angular';
 })
 export class MyTicketsComponent implements OnInit {
 
+  tickets: RequestsModel[] = [];
   myTickets: RequestsModel[] = [];
+  showMine: Boolean =false;
+
   showSpinner: Boolean = false;
   myTicketsLoaded: Boolean = false;
   statusValues: StatusTypeModel[];
   displayedColumns: string[] = ['Route', 'Status'];
 
-  dataSource = new MatTableDataSource(this.myTickets);
+  dataSource = new MatTableDataSource(this.tickets);
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -50,8 +53,9 @@ export class MyTicketsComponent implements OnInit {
     });
 
     this.requestService.myRequests$.subscribe(data => {
-      this.myTickets = data;
-    })
+      this.tickets = data;
+    });
+
     this.interval = setInterval(() => {
       this.getTicketsById(this.user.ID);
     }, environment.refreshRate);
@@ -74,9 +78,26 @@ export class MyTicketsComponent implements OnInit {
    getTicketsById(id) {
     this.myTicketsLoaded = true;
     this.requestService.getMyRequests(id);
-    this.dataSource = new MatTableDataSource(this.myTickets);
+    if(this.showMine){
+      this.myTickets = this.tickets.filter( t => t.id === this.user.ID)
+      this.dataSource = new MatTableDataSource(this.myTickets);
+    }else{
+      this.dataSource = new MatTableDataSource(this.tickets);
+    }
+    
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+  }
+
+  showAllTickets(){
+    this.showMine = false;
+
+  }
+
+  showMyTickets(){
+    this.showMine = true;
+   
 
   }
 

@@ -58,7 +58,7 @@
         </mat-form-field>
         <mat-form-field fxFlex="25%" class="example-full-width">
             <input formControlName="loadTime" matInput (dateChange)="startDateModified($event)" [ngxMatDatetimePicker]="loadPicker" 
-                placeholder="Loading Time Start">
+                placeholder="Loading Time">
             <mat-datepicker-toggle matSuffix [for]="loadPicker"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #loadPicker></ngx-mat-datetime-picker>
         </mat-form-field>
@@ -97,7 +97,7 @@
         </mat-form-field>
         <mat-form-field fxFlex="25%" class="example-full-width">
             <input matInput formControlName="unloadTime" [ngxMatDatetimePicker]="unloadPicker"
-                placeholder="Unloading Time Start">
+                placeholder="Unloading Time">
             <mat-datepicker-toggle matSuffix [for]="unloadPicker"></mat-datepicker-toggle>
             <ngx-mat-datetime-picker #unloadPicker></ngx-mat-datetime-picker>
         </mat-form-field>

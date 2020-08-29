@@ -1,5 +1,5 @@
 <div *ngIf="user">
-    <div>
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutGap.xs="0" style="margin:20px;" >
         <span class="title">Create a new request</span>
 
         <button style="margin-left:20px;" mat-mini-fab color="primary" (click)="newRequestClicked()">
@@ -7,7 +7,12 @@
         </button>
     </div>
 
-    <mat-spinner [diameter]="40" *ngIf="myTickets.length<1"></mat-spinner>
+    <mat-spinner [diameter]="40" *ngIf="tickets.length<1"></mat-spinner>
+    <div  fxLayout="row" >
+        <a (click)="showAllTickets()" style="padding-right:20px;">Show all</a>   
+        <a (click)="showMyTickets()">Show my requests</a> 
+    </div>
+     
     <div style="margin-top: 20px;">
 
         <table mat-table [dataSource]="dataSource" matSort>
@@ -25,6 +30,6 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator [hidePageSize]="true" [pageSizeOptions]="[3,5]"></mat-paginator>
+        <mat-paginator [hidePageSize]="true" [pageSizeOptions]="[10,15]"></mat-paginator>
     </div>
 </div>

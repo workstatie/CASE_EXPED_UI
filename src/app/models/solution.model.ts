@@ -10,6 +10,7 @@ export class SolutionModel {
     transit_time :  string ;
     carrier_email: string;
     email_response: string;
+    solution_status_name: string;
 
     constructor(
         id: string,

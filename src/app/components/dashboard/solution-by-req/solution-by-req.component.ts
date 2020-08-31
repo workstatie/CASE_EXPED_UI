@@ -26,7 +26,7 @@ export class SolutionByReqComponent implements OnChanges {
   @ViewChild(CountdownComponent) counter: CountdownComponent;
 
   solutions: SolutionModel[] = [];
-  displayedColumns: string[] = ['select', 'Email', 'Price', 'Delay', 'Transit Time', 'Details'];
+  displayedColumns: string[] = ['select', 'Email', 'Price', 'Delay', 'Solution Status', 'Details'];
   dataSource = new MatTableDataSource(this.solutions);
   selection = new SelectionModel<SolutionModel>(true, []);
   statusValues: StatusTypeModel[];
